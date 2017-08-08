@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
 * Студент: [Лена Карякина](https://up.htmlacademy.ru/javascript/10/user/81563).
-* Наставник: `Неизвестно`.
+* Наставник: [Олег :rabbit: Петров](https://htmlacademy.ru/profile/fyvfyv).
 
 ---
 
