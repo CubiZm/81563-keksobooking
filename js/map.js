@@ -1,31 +1,26 @@
 'use strict';
 
-var GUESTS_IN_ROOM = 10;
-
-var NUMBER_DATA = 8;
+var OFFERS = 8;
+var MIN_GUESTS_IN_ROOM = 1;
+var MAX_GUESTS_IN_ROOM = 10;
+var MIN_ROOM = 1;
+var MAX_ROOM = 5;
+var MIN_PRICE = 1000;
+var MAX_PRICE = 1000000;
+var CART_COUNT = 1;
 
 var dialog = document.querySelector('.dialog');
 var dialogPanel = dialog.querySelector('.dialog__panel');
 var tokyoPinMap = document.querySelector('.tokyo__pin-map');
+var dialogTitle = document.querySelector('.dialog__title');
 
+dialogPanel.style.display = 'none';
 
 // Генерация рандомного числа
 
-var getRandomNumber = function (min, max) {
-  return min + (Math.random() * (max - min));
+var getRandomNumber = function (min, max) { // генерирует рандомное число в различном диапозне
+  return Math.floor(min + Math.random() * (max + 1 - min));
 };
-
-// Рандомное перемешивание массива
-
-// var shuffleArray = function (array) {
-//   for (var i = array.length - 1; i > 0; i--) {
-//     var index = Math.floor(getRandomNumber(0, array.length - 1));
-//     var temp = array[i];
-//     array[i] = array[index];
-//     array[index] = temp;
-//   }
-//   return array;
-// };
 
 // Получение рандомного элемента из массива
 
@@ -35,52 +30,39 @@ var getRandomElement = function (array) {
 };
 
 var pinParams = {
-  'author': {
-    'avatar': 'img/avatars/user' + '0' + Math.floor(getRandomNumber(1, 8)) + '.png',
-  },
-  'offer': {
-    'title': [
-      'Большая уютная квартира',
-      'Маленькая неуютная квартира',
-      'Огромный прекрасный дворец',
-      'Маленький ужасный дворец',
-      'Красивый гостевой домик',
-      'Некрасивый негостеприимный домик',
-      'Уютное бунгало далеко от моря',
-      'Неуютное бунгало по колено в воде'
-    ],
-    'address': Math.floor(getRandomNumber(300, 900)) + ', ' + Math.floor(getRandomNumber(100, 500)),
-    'price': Math.floor(getRandomNumber(1000, 1000000)),
-    'type': [
-      'flat',
-      'house',
-      'bungalo'
-    ],
-    'rooms': Math.floor(getRandomNumber(1, 5)),
-    'guests': Math.floor(getRandomNumber(1, GUESTS_IN_ROOM)),
-    'checkin': [
-      '12:00',
-      '13:00',
-      '14:00'
-    ],
-    'checkout': [
-      '12:00',
-      '13:00',
-      '14:00'
-    ],
-    'features': [
-      'wifi',
-      'dishwasher',
-      'elevator',
-      'conditioner'
-    ],
-    'description': '',
-    'photos': []
-  },
-  'location': {
-    'x': Math.floor(getRandomNumber(300, 900)),
-    'y': Math.floor(getRandomNumber(100, 500))
-  }
+  'titles': [
+    'Большая уютная квартира',
+    'Маленькая неуютная квартира',
+    'Огромный прекрасный дворец',
+    'Маленький ужасный дворец',
+    'Красивый гостевой домик',
+    'Некрасивый негостеприимный домик',
+    'Уютное бунгало далеко от моря',
+    'Неуютное бунгало по колено в воде'
+  ],
+  'types': [
+    'flat',
+    'house',
+    'bungalo'
+  ],
+  'checkin': [
+    '12:00',
+    '13:00',
+    '14:00'
+  ],
+  'checkout': [
+    '12:00',
+    '13:00',
+    '14:00'
+  ],
+  'features': [
+    'wifi',
+    'dishwasher',
+    'elevator',
+    'conditioner'
+  ],
+  'description': '',
+  'photos': []
 };
 
 // Преобразование типа жилья в кирилическое название
@@ -104,26 +86,30 @@ var getTypeString = function (type) {
 };
 
 var getObjPins = function () {
+
+  var locationX = getRandomNumber(300, 900);
+  var locationY = getRandomNumber(100, 500);
+
   var pin = {
     'author': {
-      'avatar': 'img/avatars/user' + '0' + Math.floor(getRandomNumber(1, 8)) + '.png',
+      'avatar': 'img/avatars/user' + '0' + getRandomNumber(1, 8) + '.png',
     },
     'offer': {
-      'title': getRandomElement(pinParams.offer.title),
-      'address': Math.floor(getRandomNumber(300, 900)) + ', ' + Math.floor(getRandomNumber(100, 500)),
-      'price': Math.floor(getRandomNumber(1000, 1000000)),
-      'type': getTypeString(getRandomElement(pinParams.offer.type)),
-      'rooms': Math.floor(getRandomNumber(1, 5)),
-      'guests': Math.floor(getRandomNumber(1, GUESTS_IN_ROOM)),
-      'checkin': getRandomElement(pinParams.offer.checkin),
-      'checkout': getRandomElement(pinParams.offer.checkin),
-      'features': getRandomElement(pinParams.offer.features),
+      'title': getRandomElement(pinParams.titles),
+      'address': locationX + ', ' + locationY,
+      'price': getRandomNumber(MIN_PRICE, MAX_PRICE),
+      'type': getTypeString(getRandomElement(pinParams.types)),
+      'rooms': getRandomNumber(MIN_ROOM, MAX_ROOM),
+      'guests': getRandomNumber(MIN_GUESTS_IN_ROOM, MAX_GUESTS_IN_ROOM),
+      'checkin': getRandomElement(pinParams.checkin),
+      'checkout': getRandomElement(pinParams.checkin),
+      'features': getRandomElement(pinParams.features),
       'description': '',
       'photos': []
     },
     'location': {
-      'x': Math.floor(getRandomNumber(300, 900)),
-      'y': Math.floor(getRandomNumber(100, 500))
+      'x': locationX,
+      'y': locationY
     }
   };
 
@@ -167,19 +153,18 @@ var createMapNode = function (map) {
   var mapFeatures = mapElement.querySelector('.lodge__features');
   var mapDescription = mapElement.querySelector('.lodge__description');
 
-  var dialogTitle = document.querySelector('.dialog__title');
   var dialogImg = dialogTitle.querySelector('img');
 
   mapTitle.textContent = map.offer.title;
   mapAddress.textContent = map.offer.address;
   mapPrice.textContent = map.offer.price + ' ₽/ночь';
-  mapType.textContent = getTypeString(map.offer.type);
+  mapType.textContent = map.offer.type;
   mapRoomsAndGuest.textContent = 'Для ' + map.offer.guests + ' гостей в ' + map.offer.rooms + ' комнатах';
   mapCheck.textContent = 'Заезд после ' + map.offer.checkin + ', выезд до ' + map.offer.checkout;
   mapDescription.textContent = map.offer.description;
   dialogImg.src = map.author.avatar;
 
-  pinParams.offer.features.forEach(function (element) {
+  pinParams.features.forEach(function (element) {
     var span = document.createElement('span');
 
     span.className = 'feature__image feature__image--' + element;
@@ -210,7 +195,7 @@ var getPinNodes = function (array) {
   return fragment;
 };
 
-var getCartNode = function (array) {
+var getCardNode = function (array) {
 
   var fragment = document.createDocumentFragment();
 
@@ -223,5 +208,9 @@ var getCartNode = function (array) {
   return fragment;
 };
 
-tokyoPinMap.appendChild(getPinNodes(getElementsArray(NUMBER_DATA)));
-dialogPanel.appendChild(getCartNode(getElementsArray(1)));
+var pinsArray = getElementsArray(OFFERS);
+var cartsArray = getElementsArray(CART_COUNT);
+
+tokyoPinMap.appendChild(getPinNodes(pinsArray));
+
+dialogPanel.appendChild(getCardNode(cartsArray));
