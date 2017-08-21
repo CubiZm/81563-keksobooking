@@ -12,7 +12,7 @@ var tokyoPinMap = document.querySelector('.tokyo__pin-map');
 // Генерация рандомного числа
 
 var getRandomNumber = function (min, max) {
-  return Math.random() * max + min;
+  return min + (Math.random() * (max - min));
 };
 
 // Рандомное перемешивание массива
@@ -176,9 +176,15 @@ var createMapNode = function (map) {
   mapType.textContent = getTypeString(map.offer.type);
   mapRoomsAndGuest.textContent = 'Для ' + map.offer.guests + ' гостей в ' + map.offer.rooms + ' комнатах';
   mapCheck.textContent = 'Заезд после ' + map.offer.checkin + ', выезд до ' + map.offer.checkout;
-  mapFeatures.textContent = map.offer.features;
   mapDescription.textContent = map.offer.description;
   dialogImg.src = map.author.avatar;
+
+  pinParams.offer.features.forEach(function (element) {
+    var span = document.createElement('span');
+
+    span.className = 'feature__image feature__image--' + element;
+    mapFeatures.appendChild(span);
+  });
 
   return mapElement;
 };
@@ -193,7 +199,7 @@ var getElementsArray = function (numberData) {
   return pins;
 };
 
-var getPinsNode = function (array) {
+var getPinNodes = function (array) {
 
   var fragment = document.createDocumentFragment();
 
@@ -212,8 +218,10 @@ var getCartNode = function (array) {
     fragment.appendChild(createMapNode(element));
   });
 
+  dialog.replaceChild(fragment, dialogPanel);
+
   return fragment;
 };
 
-tokyoPinMap.appendChild(getPinsNode(getElementsArray(NUMBER_DATA)));
+tokyoPinMap.appendChild(getPinNodes(getElementsArray(NUMBER_DATA)));
 dialogPanel.appendChild(getCartNode(getElementsArray(1)));
