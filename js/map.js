@@ -107,13 +107,47 @@ var dictionaryTypes = {
   'bungalo': 'Бунгало'
 };
 
-var getObjAds = function () {
+/**
+ * @typedef {Object} AdLocation
+ * @property {number} x - координата по оси Х от 300 до 900
+ * @property {number} y - координата по оси Y от 100 до 500
+ */
+
+/**
+ * @typedef {Object} AdOffer
+ * @property {string} title
+ * @property {string} address - координаты адреса
+ * @property {number} price - случайное число от 1000 до 1000000
+ * @property {string} type - случайный тип жилища
+ * @property {number} rooms - случайное число комнат от 1 до 5
+ * @property {number} guests - случайное число гостей от 1 до 10
+ * @property {string} checkin - случайное время поселения
+ * @property {string} checkout - случайное время выселения
+ * @property {Array} features - массив различной длины от 0 до 6
+ * @property {string} description
+ * @property {Array} photos
+ */
+
+/**
+ * @typedef {Object} AdAuthor
+ * @property {string} avatar
+ */
+
+/**
+ * @typedef {Object} Ad
+ * @property {AdAuthor} author
+ * @property {AdOffer} offer
+ * @property {AdLocation} location
+ *
+ * @return {Object}
+ */
+var getObjAd = function () {
 
   var locationX = getRandomNumber(300, 900);
   var locationY = getRandomNumber(100, 500);
   var maxArrayLength = getRandomNumber(0, 6);
 
-  var ads = {
+  var Ad = {
     'author': {
       'avatar': getImagePath(getRandomNumber(1, 8)),
     },
@@ -136,7 +170,7 @@ var getObjAds = function () {
     }
   };
 
-  return ads;
+  return Ad;
 };
 
 /**
@@ -225,7 +259,7 @@ var getElementsArray = function (arrayLength) {
   var pins = [];
 
   for (var j = 0; j < arrayLength; j++) {
-    pins.push(getObjAds());
+    pins.push(getObjAd());
   }
 
   return pins;
