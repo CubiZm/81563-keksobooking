@@ -122,7 +122,7 @@ var getObjPins = function () {
 
   var locationX = getRandomNumber(300, 900);
   var locationY = getRandomNumber(100, 500);
-  var maxArrayLength = getRandomNumber(0, 4);
+  var maxArrayLength = getRandomNumber(0, 6);
 
   var pin = {
     'author': {
