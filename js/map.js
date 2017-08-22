@@ -29,6 +29,46 @@ var getRandomElement = function (array) {
   return array[index];
 };
 
+var getImagePath = function (number) {
+  return number > 9 ? 'img/avatars/user' + number + '.png' : 'img/avatars/user' + '0' + number + '.png';
+};
+
+/**
+ * Возвращает массив со случайными значениями заданной длины
+ * @param {Array} array
+ * @param {number} length
+ * @param {boolean} unique - если true, то элементы уникальные
+ *
+ * @return {Array}
+ */
+var getRandomArray = function (array, length, unique) {
+  var arr = [];
+
+  while (arr.length < length) {
+    var randomElement = getRandomElement(array);
+
+    if (unique && ~arr.indexOf(randomElement)) {
+      continue;
+    } else {
+      arr.push(randomElement);
+    }
+  }
+
+  return arr;
+};
+
+// Рандомное перемешивание массива
+
+// var shuffleArray = function (array) {
+//   for (var i = array.length - 1; i > 0; i--) {
+//     var index = Math.floor(getRandomNumber(0, array.length - 1));
+//     var temp = array[i];
+//     array[i] = array[index];
+//     array[index] = temp;
+//   }
+//   return array;
+// };
+
 var pinParams = {
   'titles': [
     'Большая уютная квартира',
@@ -58,6 +98,8 @@ var pinParams = {
   'features': [
     'wifi',
     'dishwasher',
+    'parking',
+    'washer',
     'elevator',
     'conditioner'
   ],
@@ -65,45 +107,32 @@ var pinParams = {
   'photos': []
 };
 
-// Преобразование типа жилья в кирилическое название
-
-var getTypeString = function (type) {
-  var typeStr = '';
-
-  switch (type) {
-    case 'flat':
-      typeStr = 'Квартира';
-      break;
-    case 'bungalo':
-      typeStr = 'Бунгало';
-      break;
-    case 'house':
-      typeStr = 'Дом';
-      break;
-  }
-
-  return typeStr;
+var translateTypes = {
+  'flat': 'Квартира',
+  'house': 'Дома',
+  'bungalo': 'Бунгало'
 };
 
 var getObjPins = function () {
 
   var locationX = getRandomNumber(300, 900);
   var locationY = getRandomNumber(100, 500);
+  var maxArrayLength = getRandomNumber(0, 4);
 
   var pin = {
     'author': {
-      'avatar': 'img/avatars/user' + '0' + getRandomNumber(1, 8) + '.png',
+      'avatar': getImagePath(getRandomNumber(1, 8)),
     },
     'offer': {
       'title': getRandomElement(pinParams.titles),
       'address': locationX + ', ' + locationY,
       'price': getRandomNumber(MIN_PRICE, MAX_PRICE),
-      'type': getTypeString(getRandomElement(pinParams.types)),
+      'type': translateTypes[getRandomElement(pinParams.types)],
       'rooms': getRandomNumber(MIN_ROOM, MAX_ROOM),
       'guests': getRandomNumber(MIN_GUESTS_IN_ROOM, MAX_GUESTS_IN_ROOM),
       'checkin': getRandomElement(pinParams.checkin),
       'checkout': getRandomElement(pinParams.checkin),
-      'features': getRandomElement(pinParams.features),
+      'features': getRandomArray(pinParams.features, maxArrayLength, true),
       'description': '',
       'photos': []
     },
@@ -155,16 +184,18 @@ var createMapNode = function (map) {
 
   var dialogImg = dialogTitle.querySelector('img');
 
+  var randomFeaturesArray = getRandomArray(pinParams.features, getRandomNumber(0, 5), true);
+
   mapTitle.textContent = map.offer.title;
   mapAddress.textContent = map.offer.address;
   mapPrice.textContent = map.offer.price + ' ₽/ночь';
-  mapType.textContent = map.offer.type;
+  mapType.textContent = translateTypes[getRandomElement(pinParams.types)];
   mapRoomsAndGuest.textContent = 'Для ' + map.offer.guests + ' гостей в ' + map.offer.rooms + ' комнатах';
   mapCheck.textContent = 'Заезд после ' + map.offer.checkin + ', выезд до ' + map.offer.checkout;
   mapDescription.textContent = map.offer.description;
   dialogImg.src = map.author.avatar;
 
-  pinParams.features.forEach(function (element) {
+  randomFeaturesArray.forEach(function (element) {
     var span = document.createElement('span');
 
     span.className = 'feature__image feature__image--' + element;
@@ -212,5 +243,4 @@ var pinsArray = getElementsArray(OFFERS);
 var cartsArray = getElementsArray(CART_COUNT);
 
 tokyoPinMap.appendChild(getPinNodes(pinsArray));
-
 dialogPanel.appendChild(getCardNode(cartsArray));
