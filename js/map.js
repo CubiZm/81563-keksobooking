@@ -16,19 +16,36 @@ var dialogTitle = document.querySelector('.dialog__title');
 
 dialogPanel.style.display = 'none';
 
-// Генерация рандомного числа
-
-var getRandomNumber = function (min, max) { // генерирует рандомное число в различном диапозне
+/**
+ * Генерирует рандомное число в заданном диапозоне
+ * @param {number} min
+ * @param {number} max
+ *
+ * @return {number}
+ */
+var getRandomNumber = function (min, max) {
   return Math.floor(min + Math.random() * (max + 1 - min));
 };
 
-// Получение рандомного элемента из массива
+//
 
+/**
+ * Получает рандомный элемент из массива
+ * @param {Array} array
+ *
+ * @return {*}
+ */
 var getRandomElement = function (array) {
   var index = Math.floor(getRandomNumber(0, array.length - 1));
   return array[index];
 };
 
+/**
+ * Возвращает строку с адресом картинки
+ * @param {number} number
+ *
+ * @return {string}
+ */
 var getImagePath = function (number) {
   return number > 9 ? 'img/avatars/user' + number + '.png' : 'img/avatars/user' + '0' + number + '.png';
 };
@@ -56,18 +73,6 @@ var getRandomArray = function (array, length, unique) {
 
   return arr;
 };
-
-// Рандомное перемешивание массива
-
-// var shuffleArray = function (array) {
-//   for (var i = array.length - 1; i > 0; i--) {
-//     var index = Math.floor(getRandomNumber(0, array.length - 1));
-//     var temp = array[i];
-//     array[i] = array[index];
-//     array[index] = temp;
-//   }
-//   return array;
-// };
 
 var pinParams = {
   'titles': [
@@ -145,6 +150,11 @@ var getObjPins = function () {
   return pin;
 };
 
+/**
+ * @param {Object} pin
+ *
+ * @return {HTMLElement}
+ */
 var createPin = function (pin) {
   var IMG_WIDTH = 40;
   var IMG_HEIGHT = 40;
@@ -168,6 +178,11 @@ var createPin = function (pin) {
   return pinBaloon;
 };
 
+/**
+ * @param {Object} map
+ *
+ * @return {HTMLElement}
+ */
 var createMapNode = function (map) {
   var template = document.querySelector('#lodge-template').content;
 
@@ -205,6 +220,12 @@ var createMapNode = function (map) {
   return mapElement;
 };
 
+/**
+ * Создаёт массив с заданным количеством объектов в нём
+ * @param {number} numberData
+ *
+ * @return {Array}
+ */
 var getElementsArray = function (numberData) {
   var pins = [];
 
@@ -215,6 +236,11 @@ var getElementsArray = function (numberData) {
   return pins;
 };
 
+/**
+ * @param {Array} array
+ *
+ * @return {HTMLElement}
+ */
 var getPinNodes = function (array) {
 
   var fragment = document.createDocumentFragment();
@@ -226,6 +252,11 @@ var getPinNodes = function (array) {
   return fragment;
 };
 
+/**
+ * @param {Array} array
+ *
+ * @return {HTMLElement}
+ */
 var getCardNode = function (array) {
 
   var fragment = document.createDocumentFragment();
