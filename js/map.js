@@ -334,6 +334,8 @@ var showDialog = function () {
 
 var hideDialog = function () {
   dialog.style.display = 'none';
+
+  removeEventHandler();
 };
 
 var openPinDialog = function (evt, ad) {
@@ -344,6 +346,7 @@ var openPinDialog = function (evt, ad) {
 
   deactivePin();
   activatePin(target);
+  initEventHandler();
   showDialog();
 };
 
@@ -374,9 +377,16 @@ var initEventHandler = function () {
   document.body.addEventListener('keydown', onDeactiveElements);
 };
 
+var removeEventHandler = function () {
+  var dialogClose = document.querySelector('.dialog__close');
+
+  dialogClose.removeEventListener('click', onCloseWindowClick);
+  dialogClose.removeEventListener('keydown', onCloseWindowKeydown);
+  document.body.removeEventListener('keydown', onDeactiveElements);
+};
+
 var pinsArray = getElementsArray(OFFERS);
 
 tokyoPinMap.appendChild(getPinNodes(pinsArray));
 
 hideDialog();
-initEventHandler();
