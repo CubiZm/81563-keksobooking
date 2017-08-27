@@ -390,3 +390,85 @@ var pinsArray = getElementsArray(OFFERS);
 tokyoPinMap.appendChild(getPinNodes(pinsArray));
 
 hideDialog();
+
+// validation
+
+// var addressInput = document.querySelector('#address');
+var titleInput = document.querySelector('#title');
+var priceInput = document.querySelector('#price');
+
+var timeIn = document.querySelector('#timein');
+var timeOut = document.querySelector('#timeout');
+var type = document.querySelector('#type');
+var rooms = document.querySelector('#room_number');
+var capacity = document.querySelector('#capacity');
+
+titleInput.minLength = 30;
+titleInput.maxLength = 100;
+
+priceInput.minLength = 0;
+priceInput.maxLength = 1000000;
+priceInput.value = 1000;
+
+
+var checkValidate = function () {
+  if (!titleInput.validity.valid) {
+    if (titleInput.validity.tooShort) {
+      titleInput.setCustomValidity('Заголовок должен состоять минимум из 30 символов');
+      titleInput.style.border = '1px solid red';
+    } else if (titleInput.validity.tooLong) {
+      titleInput.setCustomValidity('Заголовок не должен превышать 100 символов');
+      titleInput.style.border = '1px solid red';
+    } else if (titleInput.validity.valueMissing) {
+      titleInput.setCustomValidity('Заполните поле заголовка');
+      titleInput.style.border = '1px solid red';
+    }
+  } else {
+    titleInput.setCustomValidity('');
+    titleInput.style.border = 'none';
+  }
+};
+
+var selectTime = function () {
+  timeOut.value = timeIn.value;
+};
+
+var selectType = function () {
+  switch (type.value) {
+    case 'bungalo':
+      priceInput.value = 0;
+      break;
+    case 'flat':
+      priceInput.value = 1000;
+      break;
+    case 'house':
+      priceInput.value = 5000;
+      break;
+    case 'palace':
+      priceInput.value = 10000;
+      break;
+  }
+};
+
+var selectRoom = function () {
+  if (rooms.value === '100') {
+    capacity.value = '0';
+    return;
+  }
+  capacity.value = rooms.value;
+};
+
+var selectCapacity = function () {
+  if (capacity.value === '0') {
+    rooms.value = '100';
+    return;
+  }
+  rooms.value = capacity.value;
+};
+
+timeIn.addEventListener('change', selectTime);
+type.addEventListener('change', selectType);
+rooms.addEventListener('change', selectRoom);
+capacity.addEventListener('change', selectCapacity);
+
+titleInput.addEventListener('submit', checkValidate);
