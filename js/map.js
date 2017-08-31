@@ -411,47 +411,60 @@ var dictTypePrice = {
   'palace': 10000
 };
 
-var dictionaryRooms = [
+var roomsValues = [
   '100',
   '1',
   '2',
   '3',
 ];
 
-var dictionaryCapacity = [
+var capacityValues = [
   '0',
   '1',
   '2',
   '3'
 ];
 
-priceInput.value = 1000;
+var timeValues = [
+  '12:00',
+  '13:00',
+  '14:00'
+];
 
-/**
- * Синхронизирует второе значение с первым
- *
- * @param {HTMLElement} first
- * @param {HTMLElement} second
- */
-var syncElements = function (first, second) {
-  second.value = first.value;
+var objRooms = {
+  '1': ['1'],
+  '2': ['1', '2'],
+  '3': ['1', '2', '3'],
+  '100': ['0']
 };
 
 /**
- * Синхронизирует второе значение с первым по совпадению индекса в массиве
+ * Синхронизирует второе значение с первым. При необходимости — с первым по совпадению индекса в массиве
  *
  * @param {HTMLElement} first
  * @param {HTMLElement} second
  * @param {Array} firstArray
  * @param {Array} secondArray
  */
-var syncArray = function (first, second, firstArray, secondArray) {
+var syncElements = function (first, second, firstArray, secondArray) {
+  second.value = first.value;
+
   second.value = secondArray[firstArray.indexOf(first.value)];
 };
 
 var selectType = function () {
+  if (priceInput.value === '1000') {
+    priceInput.value = dictTypePrice[type.value];
+  }
   priceInput.min = dictTypePrice[type.value];
-  priceInput.value = dictTypePrice[type.value];
+};
+
+var onSyncOptions = function () {
+  var options = capacity.querySelectorAll('option');
+
+  for (var i = 0; i < options.length; i++) {
+    options[i].disabled = !(objRooms[rooms.value].includes(options[i].value));
+  }
 };
 
 var onInvalideForm = function (evt) {
@@ -459,23 +472,20 @@ var onInvalideForm = function (evt) {
   evt.target.classList.add('invalid');
 };
 
-var onSubmitForm = function (evt) {
-  evt.preventDefault();
-
+var onSubmitForm = function () {
   var invalidElements = form.querySelectorAll('.invalid');
 
   [].forEach.call(invalidElements, function (element) {
     element.classList.remove('invalid');
   });
-
-  form.reset();
 };
 
-timeIn.addEventListener('change', syncElements.bind(null, timeIn, timeOut));
+// слушает изменения на различных инпутах и синхронизирует их. Bind позволяет добавить контекст вызова this в функцию, которая у нас равна null, и передать заданный набор аргументов
+timeIn.addEventListener('change', syncElements.bind(null, timeIn, timeOut, timeValues, timeValues));
 timeOut.addEventListener('change', syncElements.bind(null, timeOut, timeIn));
 type.addEventListener('change', selectType);
-rooms.addEventListener('change', syncArray.bind(null, rooms, capacity, dictionaryRooms, dictionaryCapacity));
-capacity.addEventListener('change', syncArray.bind(null, capacity, rooms, dictionaryCapacity, dictionaryRooms));
+rooms.addEventListener('change', syncElements.bind(null, rooms, capacity, roomsValues, capacityValues));
+rooms.addEventListener('change', onSyncOptions);
 
 form.addEventListener('invalid', onInvalideForm, true);
 form.addEventListener('submit', onSubmitForm);
