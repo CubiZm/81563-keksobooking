@@ -393,8 +393,8 @@ hideDialog();
 
 // validation
 
-// var addressInput = document.querySelector('#address');
-var titleInput = document.querySelector('#title');
+var form = document.querySelector('.notice__form');
+
 var priceInput = document.querySelector('#price');
 
 var timeIn = document.querySelector('#timein');
@@ -403,72 +403,79 @@ var type = document.querySelector('#type');
 var rooms = document.querySelector('#room_number');
 var capacity = document.querySelector('#capacity');
 
-titleInput.minLength = 30;
-titleInput.maxLength = 100;
 
-priceInput.minLength = 0;
-priceInput.maxLength = 1000000;
-priceInput.value = 1000;
-
-
-var checkValidate = function () {
-  if (!titleInput.validity.valid) {
-    if (titleInput.validity.tooShort) {
-      titleInput.setCustomValidity('Заголовок должен состоять минимум из 30 символов');
-      titleInput.style.border = '1px solid red';
-    } else if (titleInput.validity.tooLong) {
-      titleInput.setCustomValidity('Заголовок не должен превышать 100 символов');
-      titleInput.style.border = '1px solid red';
-    } else if (titleInput.validity.valueMissing) {
-      titleInput.setCustomValidity('Заполните поле заголовка');
-      titleInput.style.border = '1px solid red';
-    }
-  } else {
-    titleInput.setCustomValidity('');
-    titleInput.style.border = 'none';
-  }
+var dictTypePrice = {
+  'bungalo': 0,
+  'flat': 1000,
+  'house': 5000,
+  'palace': 10000
 };
 
-var selectTime = function () {
-  timeOut.value = timeIn.value;
+var dictionaryRooms = [
+  '100',
+  '1',
+  '2',
+  '3',
+];
+
+var dictionaryCapacity = [
+  '0',
+  '1',
+  '2',
+  '3'
+];
+
+priceInput.value = 1000;
+
+/**
+ * Синхронизирует второе значение с первым
+ *
+ * @param {HTMLElement} first
+ * @param {HTMLElement} second
+ */
+var syncElements = function (first, second) {
+  second.value = first.value;
+};
+
+/**
+ * Синхронизирует второе значение с первым по совпадению индекса в массиве
+ *
+ * @param {HTMLElement} first
+ * @param {HTMLElement} second
+ * @param {Array} firstArray
+ * @param {Array} secondArray
+ */
+var syncArray = function (first, second, firstArray, secondArray) {
+  second.value = secondArray[firstArray.indexOf(first.value)];
 };
 
 var selectType = function () {
-  switch (type.value) {
-    case 'bungalo':
-      priceInput.value = 0;
-      break;
-    case 'flat':
-      priceInput.value = 1000;
-      break;
-    case 'house':
-      priceInput.value = 5000;
-      break;
-    case 'palace':
-      priceInput.value = 10000;
-      break;
-  }
+  priceInput.min = dictTypePrice[type.value];
+  priceInput.value = dictTypePrice[type.value];
 };
 
-var selectRoom = function () {
-  if (rooms.value === '100') {
-    capacity.value = '0';
-    return;
-  }
-  capacity.value = rooms.value;
+var onInvalideForm = function (evt) {
+  evt.preventDefault();
+  evt.target.classList.add('invalid');
 };
 
-var selectCapacity = function () {
-  if (capacity.value === '0') {
-    rooms.value = '100';
-    return;
-  }
-  rooms.value = capacity.value;
+var onSubmitForm = function (evt) {
+  evt.preventDefault();
+
+  var invalidElements = form.querySelectorAll('.invalid');
+
+  [].forEach.call(invalidElements, function (element) {
+    element.classList.remove('invalid');
+  });
+
+  form.reset();
 };
 
-timeIn.addEventListener('change', selectTime);
+timeIn.addEventListener('change', syncElements.bind(null, timeIn, timeOut));
+timeOut.addEventListener('change', syncElements.bind(null, timeOut, timeIn));
 type.addEventListener('change', selectType);
-rooms.addEventListener('change', selectRoom);
-capacity.addEventListener('change', selectCapacity);
+rooms.addEventListener('change', syncArray.bind(null, rooms, capacity, dictionaryRooms, dictionaryCapacity));
+capacity.addEventListener('change', syncArray.bind(null, capacity, rooms, dictionaryCapacity, dictionaryRooms));
 
-titleInput.addEventListener('submit', checkValidate);
+form.addEventListener('invalid', onInvalideForm, true);
+form.addEventListener('submit', onSubmitForm);
