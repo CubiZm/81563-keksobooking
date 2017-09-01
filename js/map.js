@@ -16,11 +16,6 @@ window.createMap = (function () {
       window.createMap.removeEventHandler();
     },
 
-    onCloseWindowClick: function () {
-      window.createMap.hideDialog();
-      window.createPin.deactivePin();
-    },
-
     initEventHandler: function () {
       var dialogClose = document.querySelector('.dialog__close');
 

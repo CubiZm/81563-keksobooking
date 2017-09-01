@@ -10,6 +10,11 @@ window.util = (function () {
       }
     },
 
+    onCloseWindowClick: function () {
+      window.createMap.hideDialog();
+      window.createPin.deactivePin();
+    },
+
     onCloseWindowKeydown: function (evt) {
       if (evt.keyCode === window.createDate.keyCodes.ENTER || evt.keyCode === window.createDate.keyCodes.ESC) {
         window.createMap.hideDialog();
@@ -86,6 +91,6 @@ window.util = (function () {
       }
 
       return array;
-    },
+    }
   };
 })();
