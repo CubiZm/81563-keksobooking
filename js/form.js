@@ -39,6 +39,12 @@ window.createForm = (function () {
     '14:00'
   ];
 
+  /**
+   * Набор свойств для комнат: значение — количество гостей,
+   * ключ — массив с количеством доступных комнат
+   *
+   * @enum {Array} objRooms
+   */
   var objRooms = {
     '1': ['1'],
     '2': ['1', '2'],
@@ -55,24 +61,20 @@ window.createForm = (function () {
    * @param {Array} secondArray
    */
   var syncElements = function (first, second, firstArray, secondArray) {
-    second.value = first.value;
-
     second.value = secondArray[firstArray.indexOf(first.value)];
   };
 
   var selectType = function () {
-    if (priceInput.value === '1000') {
-      priceInput.value = dictTypePrice[type.value];
-    }
+    priceInput.value = dictTypePrice[type.value];
     priceInput.min = dictTypePrice[type.value];
   };
 
   var onSyncOptions = function () {
     var options = capacity.querySelectorAll('option');
 
-    for (var i = 0; i < options.length; i++) {
-      options[i].disabled = !(objRooms[rooms.value].includes(options[i].value));
-    }
+    options.forEach(function (element) {
+      element.disabled = !(objRooms[rooms.value].includes(element.value));
+    });
   };
 
   var onInvalideForm = function (evt) {
@@ -88,6 +90,7 @@ window.createForm = (function () {
     });
   };
 
+  onSyncOptions();
   // слушает изменения на различных инпутах и синхронизирует их. Bind позволяет добавить контекст вызова this в функцию, которая у нас равна null, и передать заданный набор аргументов
   timeIn.addEventListener('change', syncElements.bind(null, timeIn, timeOut, timeValues, timeValues));
   timeOut.addEventListener('change', syncElements.bind(null, timeOut, timeIn, timeValues, timeValues));

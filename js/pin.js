@@ -1,7 +1,7 @@
 'use strict';
 
-window.createPin = (function () {
-  var dialog = document.querySelector('.dialog');
+window.pin = (function () {
+
   /**
    * Создаёт HTML-разметку пина
    * @param {Ad} pin
@@ -37,6 +37,30 @@ window.createPin = (function () {
     return pinBaloon;
   };
 
+  var activatePin = function (pin) {
+    pin.classList.add('pin--active');
+  };
+
+  var openPinDialog = function (evt, ad) {
+    var target = evt.currentTarget;
+
+    window.pin.deactivePin();
+    activatePin(target);
+    window.card.showDialog(ad);
+  };
+
+  var initPinHandlers = function (node, ad) {
+    node.addEventListener('click', function (evt) {
+      openPinDialog(evt, ad);
+    });
+
+    node.addEventListener('keydown', function (evt) {
+      if (window.utils.isEnterPressed(evt.keyCode)) {
+        openPinDialog(evt, ad);
+      }
+    });
+  };
+
   return {
     /**
      * Создаёт пины
@@ -46,29 +70,8 @@ window.createPin = (function () {
      */
     createPin: function (ad) {
       var node = createPinElement(ad);
-      window.createPin.initPinHandlers(node, ad);
-
+      initPinHandlers(node, ad);
       return node;
-    },
-    /**
-     * Создаёт HTML-фрагмент пинов по шаблону
-     * @param {Array.<Ad>} pinsArray
-     *
-     * @return {HTMLElement}
-     */
-    getPinNodes: function (pinsArray) {
-
-      var fragment = document.createDocumentFragment();
-
-      pinsArray.forEach(function (element) {
-        fragment.appendChild(window.createPin.createPin(element));
-      });
-
-      return fragment;
-    },
-
-    activatePin: function (pin) {
-      pin.classList.add('pin--active');
     },
 
     deactivePin: function () {
@@ -76,29 +79,6 @@ window.createPin = (function () {
       if (activePin) {
         activePin.classList.remove('pin--active');
       }
-    },
-    openPinDialog: function (evt, ad) {
-      var target = evt.currentTarget;
-      var dialogPanel = dialog.querySelector('.dialog__panel');
-
-      dialog.replaceChild(window.createCard.createAdNode(ad), dialogPanel);
-
-      window.createPin.deactivePin();
-      window.createPin.activatePin(target);
-      window.createMap.initEventHandler();
-      window.createMap.showDialog();
-    },
-
-    initPinHandlers: function (node, ad) {
-      node.addEventListener('click', function (evt) {
-        window.createPin.openPinDialog(evt, ad);
-      });
-
-      node.addEventListener('keydown', function (evt) {
-        if (evt.keyCode === window.createDate.keyCodes.ENTER) {
-          window.createPin.openPinDialog(evt, ad);
-        }
-      });
     }
   };
 })();

@@ -1,15 +1,17 @@
 'use strict';
 
-window.createDate = (function () {
+window.data = (function () {
+  /**
+   * Возвращает строку с адресом картинки
+   * @param {number} number
+   *
+   * @return {string}
+   */
+  var getImagePath = function (number) {
+    return number > 9 ? 'img/avatars/user' + number + '.png' : 'img/avatars/user' + '0' + number + '.png';
+  };
+
   return {
-    /**
-     * набор свойств для клавиш
-     * @enum {number} keyCode
-     */
-    keyCodes: {
-      ESC: 27,
-      ENTER: 13
-    },
 
     pinParams: {
       'TITLES': [
@@ -40,16 +42,18 @@ window.createDate = (function () {
         'elevator',
         'conditioner'
       ],
-      'MIN_GUESTS_IN_ROOM': 1,
-      'MAX_GUESTS_IN_ROOM': 10,
+      'MIN_GUESTS': 1,
+      'MAX_GUESTS': 10,
       'MIN_ROOM': 1,
       'MAX_ROOM': 5,
       'MIN_PRICE': 1000,
       'MAX_PRICE': 1000000,
-      'CARD_COUNT': 1
+      'CARD_COUNT': 1,
+      'MIN_ARRAY_LENGTH': 0,
+      'MAX_ARRAY_LENGTH': 6
     },
 
-    dictionaryTypes: {
+    adTypesDict: {
       'flat': 'Квартира',
       'house': 'Дома',
       'bungalo': 'Бунгало'
@@ -88,26 +92,26 @@ window.createDate = (function () {
      * @property {AdLocation} location
      */
 
-    createObjectAd: function () {
+    createObjectAd: function (index) {
 
-      var locationX = window.util.getRandomNumber(300, 900);
-      var locationY = window.util.getRandomNumber(100, 500);
-      var maxArrayLength = window.util.getRandomNumber(0, 6);
+      var locationX = window.utils.getRandomNumber(300, 900);
+      var locationY = window.utils.getRandomNumber(100, 500);
+      var maxArrayLength = window.utils.getRandomNumber(window.data.pinParams.MIN_ARRAY_LENGTH, window.data.pinParams.MAX_ARRAY_LENGTH);
 
       var Ad = {
         'author': {
-          'avatar': window.util.getImagePath(window.util.getRandomNumber(1, 8)),
+          'avatar': getImagePath(index + 1),
         },
         'offer': {
-          'title': window.util.getRandomElement(window.createDate.pinParams.TITLES),
+          'title': window.utils.getRandomElement(window.data.pinParams.TITLES),
           'address': locationX + ', ' + locationY,
-          'price': window.util.getRandomNumber(window.createDate.pinParams.MIN_PRICE, window.createDate.pinParams.MAX_PRICE),
-          'type': window.util.getRandomElement(window.createDate.pinParams.TYPES),
-          'rooms': window.util.getRandomNumber(window.createDate.pinParams.MIN_ROOM, window.createDate.pinParams.MAX_ROOM),
-          'guests': window.util.getRandomNumber(window.createDate.pinParams.MIN_GUESTS_IN_ROOM, window.createDate.pinParams.MAX_GUESTS_IN_ROOM),
-          'checkin': window.util.getRandomElement(window.createDate.pinParams.TIME),
-          'checkout': window.util.getRandomElement(window.createDate.pinParams.TIME),
-          'features': window.util.getRandomArray(window.createDate.pinParams.FEATURES, maxArrayLength, true),
+          'price': window.utils.getRandomNumber(window.data.pinParams.MIN_PRICE, window.data.pinParams.MAX_PRICE),
+          'type': window.utils.getRandomElement(window.data.pinParams.TYPES),
+          'rooms': window.utils.getRandomNumber(window.data.pinParams.MIN_ROOM, window.data.pinParams.MAX_ROOM),
+          'guests': window.utils.getRandomNumber(window.data.pinParams.MIN_GUESTS, window.data.pinParams.MAX_GUESTS),
+          'checkin': window.utils.getRandomElement(window.data.pinParams.TIME),
+          'checkout': window.utils.getRandomElement(window.data.pinParams.TIME),
+          'features': window.utils.getRandomArray(window.data.pinParams.FEATURES, maxArrayLength, true),
           'description': '',
           'photos': []
         },

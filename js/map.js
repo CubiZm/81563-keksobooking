@@ -1,35 +1,31 @@
 'use strict';
 
-window.createMap = (function () {
+window.map = (function () {
 
-  var dialog = document.querySelector('.dialog');
+  var OFFERS = 8;
 
-  return {
+  var tokyoPinMap = document.querySelector('.tokyo__pin-map');
 
-    showDialog: function () {
-      dialog.style.display = 'block';
-    },
+  var adsArray = window.utils.getElementsArray(window.data.createObjectAd, OFFERS);
 
-    hideDialog: function () {
-      dialog.style.display = 'none';
+  /**
+   * Создаёт HTML-фрагмент пинов по шаблону
+   * @param {Array.<Ad>} array
+   *
+   * @return {HTMLElement}
+   */
+  var getPinNodes = function (array) {
 
-      window.createMap.removeEventHandler();
-    },
+    var fragment = document.createDocumentFragment();
 
-    initEventHandler: function () {
-      var dialogClose = document.querySelector('.dialog__close');
+    array.forEach(function (element) {
+      fragment.appendChild(window.pin.createPin(element));
+    });
 
-      dialogClose.addEventListener('click', window.util.onCloseWindowClick);
-      dialogClose.addEventListener('keydown', window.util.onCloseWindowKeydown);
-      document.body.addEventListener('keydown', window.util.onDeactiveElements);
-    },
-
-    removeEventHandler: function () {
-      var dialogClose = document.querySelector('.dialog__close');
-
-      dialogClose.removeEventListener('click', window.util.onCloseWindowClick);
-      dialogClose.removeEventListener('keydown', window.util.onCloseWindowKeydown);
-      document.body.removeEventListener('keydown', window.util.onDeactiveElements);
-    },
+    return fragment;
   };
+
+  window.card.hideDialog();
+  tokyoPinMap.appendChild(getPinNodes(adsArray));
+
 })();

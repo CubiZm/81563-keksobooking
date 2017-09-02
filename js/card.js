@@ -1,61 +1,105 @@
 'use strict';
 
-window.createCard = (function () {
+window.card = (function () {
 
-  var OFFERS = 8;
-
-  var tokyoPinMap = document.querySelector('.tokyo__pin-map');
-
-  var pinsArray = window.util.getElementsArray(OFFERS);
-
-  tokyoPinMap.appendChild(window.createPin.getPinNodes(pinsArray));
-
-  window.createMap.hideDialog();
-
+  var dialog = document.querySelector('.dialog');
   var dialogTitle = document.querySelector('.dialog__title');
+  var dialogImg = dialogTitle.querySelector('img');
+
+  var template = document.querySelector('#lodge-template').content;
+
+  var randomFeaturesArray = window.utils.getRandomArray(window.data.pinParams.FEATURES, window.utils.getRandomNumber(0, 5), true);
+
+  /**
+   * Создаёт HTML-разметку объявления
+   * @param {Ad} ad
+   *
+   * @return {HTMLElement}
+   */
+  var createAdNode = function (ad) {
+
+    var adElement = template.cloneNode(true);
+
+    var adTitle = adElement.querySelector('.lodge__title');
+    var adAddress = adElement.querySelector('.lodge__address');
+    var adPrice = adElement.querySelector('.lodge__price');
+    var adType = adElement.querySelector('.lodge__type');
+    var adRoomsAndGuest = adElement.querySelector('.lodge__rooms-and-guests');
+    var adCheck = adElement.querySelector('.lodge__checkin-time');
+    var adFeatures = adElement.querySelector('.lodge__features');
+    var adDescription = adElement.querySelector('.lodge__description');
+
+    adTitle.textContent = ad.offer.title;
+    adAddress.textContent = ad.offer.address;
+    adPrice.textContent = ad.offer.price + ' ₽/ночь';
+    adType.textContent = window.data.adTypesDict[window.utils.getRandomElement(window.data.pinParams.TYPES)];
+    adRoomsAndGuest.textContent = 'Для ' + ad.offer.guests + ' гостей в ' + ad.offer.rooms + ' комнатах';
+    adCheck.textContent = 'Заезд после ' + ad.offer.checkin + ', выезд до ' + ad.offer.checkout;
+    adDescription.textContent = ad.offer.description;
+    dialogImg.src = ad.author.avatar;
+
+    randomFeaturesArray.forEach(function (element) {
+      var span = document.createElement('span');
+
+      span.className = 'feature__image feature__image--' + element;
+      adFeatures.appendChild(span);
+    });
+
+    return adElement;
+  };
+
+  var onDeactiveElements = function (evt) {
+    if (window.utils.isEscPressed(evt.keyCode)) {
+      window.card.hideDialog();
+      window.pin.deactivePin();
+    }
+  };
+
+  var onCloseWindowClick = function () {
+    window.card.hideDialog();
+    window.pin.deactivePin();
+  };
+
+  var onCloseWindowKeydown = function (evt) {
+    if (window.utils.isEnterPressed(evt.keyCode) ||
+        window.utils.isEscPressed(evt.keyCode)) {
+      window.card.hideDialog();
+      window.pin.deactivePin();
+    }
+  };
+
+  var removeEventHandler = function () {
+    var dialogClose = document.querySelector('.dialog__close');
+
+    dialogClose.removeEventListener('click', onCloseWindowClick);
+    dialogClose.removeEventListener('keydown', onCloseWindowKeydown);
+    document.body.removeEventListener('keydown', onDeactiveElements);
+  };
+
+  var initEventHandler = function () {
+    var dialogClose = document.querySelector('.dialog__close');
+
+    dialogClose.addEventListener('click', onCloseWindowClick);
+    dialogClose.addEventListener('keydown', onCloseWindowKeydown);
+    document.body.addEventListener('keydown', onDeactiveElements);
+  };
+
+  var changeDialogPanel = function (ad) {
+    var dialogPanel = dialog.querySelector('.dialog__panel');
+    dialog.replaceChild(createAdNode(ad), dialogPanel);
+  };
 
   return {
-    /**
-     * Создаёт HTML-разметку объявления
-     * @param {Ad} ad
-     *
-     * @return {HTMLElement}
-     */
-    createAdNode: function (ad) {
-      var template = document.querySelector('#lodge-template').content;
+    showDialog: function (ad) {
+      changeDialogPanel(ad);
+      initEventHandler();
+      dialog.style.display = 'block';
+    },
 
-      var adElement = template.cloneNode(true);
+    hideDialog: function () {
+      dialog.style.display = 'none';
 
-      var adTitle = adElement.querySelector('.lodge__title');
-      var adAddress = adElement.querySelector('.lodge__address');
-      var adPrice = adElement.querySelector('.lodge__price');
-      var adType = adElement.querySelector('.lodge__type');
-      var adRoomsAndGuest = adElement.querySelector('.lodge__rooms-and-guests');
-      var adCheck = adElement.querySelector('.lodge__checkin-time');
-      var adFeatures = adElement.querySelector('.lodge__features');
-      var adDescription = adElement.querySelector('.lodge__description');
-
-      var dialogImg = dialogTitle.querySelector('img');
-
-      var randomFeaturesArray = window.util.getRandomArray(window.createDate.pinParams.FEATURES, window.util.getRandomNumber(0, 5), true);
-
-      adTitle.textContent = ad.offer.title;
-      adAddress.textContent = ad.offer.address;
-      adPrice.textContent = ad.offer.price + ' ₽/ночь';
-      adType.textContent = window.createDate.dictionaryTypes[window.util.getRandomElement(window.createDate.pinParams.TYPES)];
-      adRoomsAndGuest.textContent = 'Для ' + ad.offer.guests + ' гостей в ' + ad.offer.rooms + ' комнатах';
-      adCheck.textContent = 'Заезд после ' + ad.offer.checkin + ', выезд до ' + ad.offer.checkout;
-      adDescription.textContent = ad.offer.description;
-      dialogImg.src = ad.author.avatar;
-
-      randomFeaturesArray.forEach(function (element) {
-        var span = document.createElement('span');
-
-        span.className = 'feature__image feature__image--' + element;
-        adFeatures.appendChild(span);
-      });
-
-      return adElement;
+      removeEventHandler();
     }
   };
 })();

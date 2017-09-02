@@ -1,26 +1,17 @@
 'use strict';
 
-window.util = (function () {
+window.utils = (function () {
+
+  /**
+   * набор свойств для клавиш
+   * @enum {number} keyCode
+   */
+  var keyCodes = {
+    ESC: 27,
+    ENTER: 13
+  };
+
   return {
-
-    onDeactiveElements: function (evt) {
-      if (evt.keyCode === window.createDate.keyCodes.ESC) {
-        window.createMap.hideDialog();
-        window.createPin.deactivePin();
-      }
-    },
-
-    onCloseWindowClick: function () {
-      window.createMap.hideDialog();
-      window.createPin.deactivePin();
-    },
-
-    onCloseWindowKeydown: function (evt) {
-      if (evt.keyCode === window.createDate.keyCodes.ENTER || evt.keyCode === window.createDate.keyCodes.ESC) {
-        window.createMap.hideDialog();
-        window.createPin.deactivePin();
-      }
-    },
 
     /**
      * Генерирует рандомное число в заданном диапозоне
@@ -40,18 +31,8 @@ window.util = (function () {
      * @return {*}
      */
     getRandomElement: function (array) {
-      var index = Math.floor(window.util.getRandomNumber(0, array.length - 1));
+      var index = Math.floor(this.getRandomNumber(0, array.length - 1));
       return array[index];
-    },
-
-    /**
-     * Возвращает строку с адресом картинки
-     * @param {number} number
-     *
-     * @return {string}
-     */
-    getImagePath: function (number) {
-      return number > 9 ? 'img/avatars/user' + number + '.png' : 'img/avatars/user' + '0' + number + '.png';
     },
 
     /**
@@ -66,7 +47,7 @@ window.util = (function () {
       var arr = [];
 
       while (arr.length < length) {
-        var randomElement = window.util.getRandomElement(array);
+        var randomElement = this.getRandomElement(array);
 
         if (unique && ~arr.indexOf(randomElement)) {
           continue;
@@ -79,18 +60,28 @@ window.util = (function () {
     },
     /**
      * Создаёт массив с заданным количеством объектов (пинов) в нём
+     *
+     * @param {Function} getObj - функция возвращающая объект
      * @param {number} arrayLength
      *
      * @return {Array}
      */
-    getElementsArray: function (arrayLength) {
+    getElementsArray: function (getObj, arrayLength) {
       var array = [];
 
-      for (var j = 0; j < arrayLength; j++) {
-        array.push(window.createDate.createObjectAd());
+      for (var i = 0; i < arrayLength; i++) {
+        array.push(getObj(i));
       }
 
       return array;
+    },
+
+    isEscPressed: function (keyCode) {
+      return keyCode === keyCodes.ESC;
+    },
+
+    isEnterPressed: function (keyCode) {
+      return keyCode === keyCodes.ENTER;
     }
   };
 })();
