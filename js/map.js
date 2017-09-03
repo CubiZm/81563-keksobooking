@@ -55,13 +55,16 @@ window.map = (function () {
         y: startCoords.y - evtMove.clientY
       };
 
+      var filterPanelHeigth = 46;
+      var headerPanelHeight = 80;
+
       var maxMapWidth = map.offsetWidth;
       var maxMapHeight = map.offsetHeight;
 
       var maxCoordX = maxMapWidth - pinImg.WIDTH / 2;
       var minCoordX = 0 - pinImg.WIDTH / 2;
-      var maxCoordY = maxMapHeight - pinImg.HEIGTH - 46;
-      var minCoordY = 0;
+      var maxCoordY = maxMapHeight - pinImg.HEIGTH - filterPanelHeigth;
+      var minCoordY = 0 + headerPanelHeight;
 
       var pinY = pinMain.offsetTop - shift.y;
       var pinX = pinMain.offsetLeft - shift.x;
