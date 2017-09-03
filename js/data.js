@@ -50,7 +50,11 @@ window.data = (function () {
       'MAX_PRICE': 1000000,
       'CARD_COUNT': 1,
       'MIN_ARRAY_LENGTH': 0,
-      'MAX_ARRAY_LENGTH': 6
+      'MAX_ARRAY_LENGTH': 6,
+      'START_X': 300,
+      'END_X': 900,
+      'START_Y': 100,
+      'END_Y': 500
     },
 
     adTypesDict: {
@@ -94,8 +98,8 @@ window.data = (function () {
 
     createObjectAd: function (index) {
 
-      var locationX = window.utils.getRandomNumber(300, 900);
-      var locationY = window.utils.getRandomNumber(100, 500);
+      var locationX = window.utils.getRandomNumber(window.data.pinParams.START_X, window.data.pinParams.END_X);
+      var locationY = window.utils.getRandomNumber(window.data.pinParams.START_Y, window.data.pinParams.END_Y);
       var maxArrayLength = window.utils.getRandomNumber(window.data.pinParams.MIN_ARRAY_LENGTH, window.data.pinParams.MAX_ARRAY_LENGTH);
 
       var Ad = {
