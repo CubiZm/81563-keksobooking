@@ -4,6 +4,7 @@ window.map = (function () {
 
   var OFFERS = 8;
 
+  var map = document.querySelector('.tokyo');
   var tokyoPinMap = document.querySelector('.tokyo__pin-map');
   var pinMain = document.querySelector('.pin__main');
   var address = document.querySelector('#address');
@@ -30,48 +31,69 @@ window.map = (function () {
   pinMain.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
 
-    address.setAttribute('readonly', 'readonly');
+    // получили положение курсора в момент клика
+    var startCoords = {
+      x: evt.clientX,
+      y: evt.clientY
+    };
 
     var onMouseMove = function (evtMove) {
       evtMove.preventDefault();
 
+      /**
+       * Параметры главного пина
+       * @enum {number} pinImg
+       */
       var pinImg = {
         WIDTH: 75,
         HEIGTH: 94
       };
 
-      var startCoord = {
+      // на сколько сдвинулся курсор
+      var shift = {
+        x: startCoords.x - evtMove.clientX,
+        y: startCoords.y - evtMove.clientY
+      };
+
+      var maxMapWidth = map.offsetWidth;
+      var maxMapHeight = map.offsetHeight;
+
+      var maxCoordX = maxMapWidth - pinImg.WIDTH / 2;
+      var minCoordX = 0 - pinImg.WIDTH / 2;
+      var maxCoordY = maxMapHeight - pinImg.HEIGTH - 46;
+      var minCoordY = 0;
+
+      var pinY = pinMain.offsetTop - shift.y;
+      var pinX = pinMain.offsetLeft - shift.x;
+
+      // Проверяем координаты на «валидность», чтобы не вышли за пределы карты
+      var checkCoordinates = function () {
+        if (pinX > maxCoordX) {
+          pinX = maxCoordX;
+        }
+        if (pinX < minCoordX) {
+          pinX = minCoordX;
+        }
+        if (pinY > maxCoordY) {
+          pinY = maxCoordY;
+        }
+        if (pinY < minCoordY) {
+          pinY = minCoordY;
+        }
+      };
+
+      checkCoordinates();
+
+      // переопределяем стартовые координтаы
+      startCoords = {
         x: evtMove.clientX,
         y: evtMove.clientY
       };
 
-      var location = {
-        START_X: window.data.pinParams.START_X,
-        END_X: window.data.pinParams.END_X,
-        START_Y: window.data.pinParams.START_Y,
-        END_Y: window.data.pinParams.END_Y
-      };
+      pinMain.style.top = pinY + 'px';
+      pinMain.style.left = pinX + 'px';
 
-      var currentCoords = {
-        x: pinMain.offsetLeft - startCoord.x,
-        y: pinMain.offsetTop - startCoord.y
-      };
-
-      var COORD_X_POSITION = location.START_X < startCoord.x && startCoord.x < location.END_X;
-      var COORD_Y_POSITION = location.START_Y < startCoord.y && startCoord.y < location.END_Y;
-
-      if (COORD_X_POSITION) {
-        var x = startCoord.x + 'px';
-      }
-
-      if (COORD_Y_POSITION) {
-        var y = startCoord.y + 'px';
-      }
-
-      pinMain.style.left = x;
-      pinMain.style.top = y;
-
-      address.value = 'x: ' + (currentCoords.x + pinImg.WIDTH) + ', y: ' + (currentCoords.y + pinImg.HEIGTH);
+      address.value = 'x: ' + (pinX + pinImg.WIDTH / 2) + ', y: ' + (pinY + pinImg.HEIGTH);
 
     };
 
@@ -86,6 +108,8 @@ window.map = (function () {
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);
   });
+
+  address.setAttribute('readonly', 'readonly');
 
   window.card.hideDialog();
   tokyoPinMap.appendChild(getPinNodes(adsArray));
