@@ -92,10 +92,10 @@ window.createForm = (function () {
 
   onSyncOptions();
   // слушает изменения на различных инпутах и синхронизирует их. Bind позволяет добавить контекст вызова this в функцию, которая у нас равна null, и передать заданный набор аргументов
-  timeIn.addEventListener('change', syncElements.bind(null, timeIn, timeOut, timeValues, timeValues));
-  timeOut.addEventListener('change', syncElements.bind(null, timeOut, timeIn, timeValues, timeValues));
+  timeIn.addEventListener('change', window.synchronizeFields(timeIn, timeOut, timeValues, timeValues, syncElements));
+  timeOut.addEventListener('change', window.synchronizeFields(timeOut, timeIn, timeValues, timeValues, syncElements));
   type.addEventListener('change', selectType);
-  rooms.addEventListener('change', syncElements.bind(null, rooms, capacity, roomsValues, capacityValues));
+  rooms.addEventListener('change', window.synchronizeFields(rooms, capacity, roomsValues, capacityValues, onSyncOptions));
   rooms.addEventListener('change', onSyncOptions);
 
   form.addEventListener('invalid', onInvalideForm, true);
