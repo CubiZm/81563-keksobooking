@@ -91,7 +91,7 @@ window.createForm = (function () {
   };
 
   onSyncOptions();
-  // слушает изменения на различных инпутах и синхронизирует их. Bind позволяет добавить контекст вызова this в функцию, которая у нас равна null, и передать заданный набор аргументов
+  // слушает изменения на различных инпутах и синхронизирует их.
   timeIn.addEventListener('change', window.synchronizeFields(timeIn, timeOut, timeValues, timeValues, syncElements));
   timeOut.addEventListener('change', window.synchronizeFields(timeOut, timeIn, timeValues, timeValues, syncElements));
   type.addEventListener('change', selectType);
