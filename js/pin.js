@@ -10,6 +10,11 @@ window.pin = (function () {
    */
   var createPinElement = function (pin) {
 
+    /**
+     * Параметры изображения пина
+     *
+     * @enum {*} img
+     */
     var img = {
       WIDTH: 40,
       HEIGHT: 40,
@@ -23,7 +28,7 @@ window.pin = (function () {
     var imgElement = document.createElement('img');
 
     pinBaloon.className = PIN_CLASS_NAME;
-    pinBaloon.style.left = pin.location.x - pinBaloon.offsetWidth + 'px';
+    pinBaloon.style.left = pin.location.x - pinBaloon.offsetWidth / 2 + 'px';
     pinBaloon.style.top = pin.location.y - pinBaloon.offsetHeight + 'px';
     pinBaloon.tabIndex = PIN_TAB_INDEX;
 
