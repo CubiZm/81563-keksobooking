@@ -95,7 +95,7 @@ window.createForm = (function () {
   timeIn.addEventListener('change', window.synchronizeFields(timeIn, timeOut, timeValues, timeValues, syncElements));
   timeOut.addEventListener('change', window.synchronizeFields(timeOut, timeIn, timeValues, timeValues, syncElements));
   type.addEventListener('change', selectType);
-  rooms.addEventListener('change', window.synchronizeFields(rooms, capacity, roomsValues, capacityValues, onSyncOptions));
+  rooms.addEventListener('change', window.synchronizeFields(rooms, capacity, roomsValues, capacityValues, syncElements));
   rooms.addEventListener('change', onSyncOptions);
 
   form.addEventListener('invalid', onInvalideForm, true);
