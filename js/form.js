@@ -92,11 +92,11 @@ window.createForm = (function () {
 
   onSyncOptions();
   // слушает изменения на различных инпутах и синхронизирует их.
-  timeIn.addEventListener('change', window.synchronizeFields(timeIn, timeOut, timeValues, timeValues, syncElements));
-  timeOut.addEventListener('change', window.synchronizeFields(timeOut, timeIn, timeValues, timeValues, syncElements));
-  type.addEventListener('change', selectType);
-  rooms.addEventListener('change', window.synchronizeFields(rooms, capacity, roomsValues, capacityValues, syncElements));
-  rooms.addEventListener('change', onSyncOptions);
+  window.synchronizeFields(timeIn, timeOut, timeValues, timeValues, syncElements);
+  window.synchronizeFields(timeOut, timeIn, timeValues, timeValues, syncElements);
+  window.synchronizeFields(type, priceInput, roomsValues, capacityValues, selectType);
+  window.synchronizeFields(rooms, capacity, roomsValues, capacityValues, syncElements);
+  window.synchronizeFields(rooms, capacity, roomsValues, capacityValues, onSyncOptions);
 
   form.addEventListener('invalid', onInvalideForm, true);
   form.addEventListener('submit', onSubmitForm);
