@@ -2,14 +2,10 @@
 
 window.map = (function () {
 
-  var OFFERS = 8;
-
   var map = document.querySelector('.tokyo');
   var tokyoPinMap = document.querySelector('.tokyo__pin-map');
   var pinMain = document.querySelector('.pin__main');
   var address = document.querySelector('#address');
-
-  var adsArray = window.utils.getElementsArray(window.data.createObjectAd, OFFERS);
 
   /**
    * Создаёт HTML-фрагмент пинов по шаблону
@@ -27,6 +23,7 @@ window.map = (function () {
 
     return fragment;
   };
+
 
   pinMain.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
@@ -115,6 +112,23 @@ window.map = (function () {
   address.setAttribute('readonly', 'readonly');
 
   window.card.hideDialog();
-  tokyoPinMap.appendChild(getPinNodes(adsArray));
+
+  var succesHandler = function (offers) {
+    tokyoPinMap.appendChild(getPinNodes(offers));
+  };
+
+  var errorHandler = function (errorMessage) {
+    var node = document.createElement('div');
+    node.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: red; width: 100%';
+    node.style.position = 'absolute';
+    node.style.left = 0;
+    node.style.top = '100px';
+    node.style.fontSize = '30px';
+
+    node.textContent = errorMessage;
+    document.body.insertAdjacentElement('afterbegin', node);
+  };
+
+  window.backend.load(succesHandler, errorHandler);
 
 })();

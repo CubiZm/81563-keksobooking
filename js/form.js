@@ -1,6 +1,6 @@
 'use strict';
 
-window.createForm = (function () {
+window.form = (function () {
   var form = document.querySelector('.notice__form');
 
   var priceInput = document.querySelector('#price');
@@ -82,15 +82,22 @@ window.createForm = (function () {
     evt.target.classList.add('invalid');
   };
 
-  var onSubmitForm = function () {
+  var onSubmitForm = function (evt) {
+
+    evt.preventDefault();
     var invalidElements = form.querySelectorAll('.invalid');
 
-    [].forEach.call(invalidElements, function (element) {
-      element.classList.remove('invalid');
+    window.backend.save(new FormData(form), function () {
+      [].forEach.call(invalidElements, function (element) {
+        element.classList.remove('invalid');
+      });
     });
+
+    form.reset();
   };
 
   onSyncOptions();
+
   // слушает изменения на различных инпутах и синхронизирует их.
   window.synchronizeFields(timeIn, timeOut, timeValues, timeValues, syncElements);
   window.synchronizeFields(timeOut, timeIn, timeValues, timeValues, syncElements);
