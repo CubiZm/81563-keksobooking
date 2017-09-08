@@ -77,6 +77,23 @@ window.form = (function () {
     });
   };
 
+  var errorHandler = function (errorMessage) {
+    var node = document.createElement('div');
+    node.className = 'error';
+    node.textContent = errorMessage;
+    document.body.insertAdjacentElement('afterbegin', node);
+  };
+
+  var succesHandler = function () {
+    var invalidElements = form.querySelectorAll('.invalid');
+
+    [].forEach.call(invalidElements, function (element) {
+      element.classList.remove('invalid');
+    });
+    priceInput.min = '0';
+    form.reset();
+  };
+
   var onInvalideForm = function (evt) {
     evt.preventDefault();
     evt.target.classList.add('invalid');
@@ -85,15 +102,8 @@ window.form = (function () {
   var onSubmitForm = function (evt) {
 
     evt.preventDefault();
-    var invalidElements = form.querySelectorAll('.invalid');
 
-    window.backend.save(new FormData(form), function () {
-      [].forEach.call(invalidElements, function (element) {
-        element.classList.remove('invalid');
-      });
-    });
-
-    form.reset();
+    window.backend.save(new FormData(form), succesHandler, errorHandler);
   };
 
   onSyncOptions();

@@ -109,25 +109,20 @@ window.map = (function () {
     document.addEventListener('mouseup', onMouseUp);
   });
 
-  address.setAttribute('readonly', 'readonly');
-
-  window.card.hideDialog();
-
   var succesHandler = function (offers) {
     tokyoPinMap.appendChild(getPinNodes(offers));
   };
 
   var errorHandler = function (errorMessage) {
     var node = document.createElement('div');
-    node.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: red; width: 100%';
-    node.style.position = 'absolute';
-    node.style.left = 0;
-    node.style.top = '100px';
-    node.style.fontSize = '30px';
-
+    node.className = 'error';
     node.textContent = errorMessage;
     document.body.insertAdjacentElement('afterbegin', node);
   };
+
+  address.setAttribute('readonly', 'readonly');
+
+  window.card.hideDialog();
 
   window.backend.load(succesHandler, errorHandler);
 
