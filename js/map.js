@@ -2,14 +2,10 @@
 
 window.map = (function () {
 
-  var OFFERS = 8;
-
   var map = document.querySelector('.tokyo');
   var tokyoPinMap = document.querySelector('.tokyo__pin-map');
   var pinMain = document.querySelector('.pin__main');
   var address = document.querySelector('#address');
-
-  var adsArray = window.utils.getElementsArray(window.data.createObjectAd, OFFERS);
 
   /**
    * Создаёт HTML-фрагмент пинов по шаблону
@@ -27,6 +23,7 @@ window.map = (function () {
 
     return fragment;
   };
+
 
   pinMain.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
@@ -96,7 +93,7 @@ window.map = (function () {
       pinMain.style.top = pinY + 'px';
       pinMain.style.left = pinX + 'px';
 
-      address.value = 'x: ' + (pinX + pinImg.WIDTH / 2) + ', y: ' + (pinY + pinImg.HEIGTH);
+      address.value = (pinX + pinImg.WIDTH / 2) + ', ' + (pinY + pinImg.HEIGTH);
 
     };
 
@@ -107,14 +104,23 @@ window.map = (function () {
       document.removeEventListener('mouseup', onMouseUp);
     };
 
-
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);
   });
 
-  address.setAttribute('readonly', 'readonly');
+  var succesHandler = function (offers) {
+    tokyoPinMap.appendChild(getPinNodes(offers));
+  };
+
+  var errorHandler = function (errorMessage) {
+    var node = document.createElement('div');
+    node.className = 'error';
+    node.textContent = errorMessage;
+    document.body.insertAdjacentElement('afterbegin', node);
+  };
 
   window.card.hideDialog();
-  tokyoPinMap.appendChild(getPinNodes(adsArray));
+
+  window.backend.load(succesHandler, errorHandler);
 
 })();

@@ -1,6 +1,6 @@
 'use strict';
 
-window.createForm = (function () {
+window.form = (function () {
   var form = document.querySelector('.notice__form');
 
   var priceInput = document.querySelector('#price');
@@ -77,20 +77,42 @@ window.createForm = (function () {
     });
   };
 
-  var onInvalideForm = function (evt) {
-    evt.preventDefault();
-    evt.target.classList.add('invalid');
+  var errorHandler = function (errorMessage) {
+    var node = document.createElement('div');
+    node.className = 'error';
+    node.textContent = errorMessage;
+    document.body.insertAdjacentElement('afterbegin', node);
   };
 
-  var onSubmitForm = function () {
+  var succesHandler = function () {
     var invalidElements = form.querySelectorAll('.invalid');
 
     [].forEach.call(invalidElements, function (element) {
       element.classList.remove('invalid');
     });
+    priceInput.min = '0';
+    form.reset();
+  };
+
+  var onInvalideForm = function (evt) {
+    evt.preventDefault();
+
+    evt.target.classList.add('invalid');
+
+    evt.target.addEventListener('change', function (e) {
+      e.target.classList.remove('invalid');
+    });
+  };
+
+  var onSubmitForm = function (evt) {
+
+    evt.preventDefault();
+
+    window.backend.save(new FormData(form), succesHandler, errorHandler);
   };
 
   onSyncOptions();
+
   // слушает изменения на различных инпутах и синхронизирует их.
   window.synchronizeFields(timeIn, timeOut, timeValues, timeValues, syncElements);
   window.synchronizeFields(timeOut, timeIn, timeValues, timeValues, syncElements);
