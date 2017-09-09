@@ -96,7 +96,12 @@ window.form = (function () {
 
   var onInvalideForm = function (evt) {
     evt.preventDefault();
+
     evt.target.classList.add('invalid');
+
+    evt.target.addEventListener('change', function (e) {
+      e.target.classList.remove('invalid');
+    });
   };
 
   var onSubmitForm = function (evt) {

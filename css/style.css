@@ -673,7 +673,7 @@ select option:hover {
 }
 
 .error {
-  position: absolute;
+  position: fixed;
   top: 100px;
   left: 0;
   font-size: 30px;
@@ -683,4 +683,8 @@ select option:hover {
   background-color: red;
   width: 100%;
   color: #fff;
+}
+
+input[data-readonly] {
+  pointer-events: none;
 }

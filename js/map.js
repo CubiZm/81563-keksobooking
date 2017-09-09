@@ -93,7 +93,7 @@ window.map = (function () {
       pinMain.style.top = pinY + 'px';
       pinMain.style.left = pinX + 'px';
 
-      address.value = 'x: ' + (pinX + pinImg.WIDTH / 2) + ', y: ' + (pinY + pinImg.HEIGTH);
+      address.value = (pinX + pinImg.WIDTH / 2) + ', ' + (pinY + pinImg.HEIGTH);
 
     };
 
@@ -103,7 +103,6 @@ window.map = (function () {
       document.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseup', onMouseUp);
     };
-
 
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);
@@ -119,8 +118,6 @@ window.map = (function () {
     node.textContent = errorMessage;
     document.body.insertAdjacentElement('afterbegin', node);
   };
-
-  address.setAttribute('readonly', 'readonly');
 
   window.card.hideDialog();
 

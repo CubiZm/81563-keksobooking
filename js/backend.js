@@ -26,7 +26,7 @@ window.backend = (function () {
     xhr.responseType = 'json';
 
     xhr.addEventListener('load', function () {
-      (dictErrors[xhr.status])();
+      (dictErrors[xhr.status] || dictErrors['default'])();
     });
 
     xhr.addEventListener('timeout', function () {
