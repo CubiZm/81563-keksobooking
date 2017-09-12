@@ -37,7 +37,6 @@ window.filters = (function () {
     var filteredElements = function (input, value) {
       if (input.value !== 'any') {
         filteredOffers = filteredOffers.filter(function (element) {
-          // console.log(element.offer.input);
           return element.offer[value].toString() === input.value.toString();
         });
       }
