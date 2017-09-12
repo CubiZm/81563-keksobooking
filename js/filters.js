@@ -34,38 +34,31 @@ window.filters = (function () {
       }
     });
 
+    var filteredElements = function (input, value) {
+      if (input.value !== 'any') {
+        filteredOffers = filteredOffers.filter(function (element) {
+          // console.log(element.offer.input);
+          return element.offer[value].toString() === input.value.toString();
+        });
+      }
+    };
 
-    if (type.value !== 'any') {
-      filteredOffers = filteredOffers.filter(function (element) {
-        return element.offer.type === type.value;
-      });
-    }
+    filteredElements(type, 'type');
+    filteredElements(rooms, 'rooms');
+    filteredElements(guests, 'guests');
 
     filteredOffers = filteredOffers.filter(function (element) {
-      switch (price.value) {
-        case 'any':
-          return true;
-        case 'low':
-          return element.offer.price < 10000;
-        case 'middle':
-          return element.offer.price >= 10000 && element.offer.price <= 50000;
-        case 'high':
-          return element.offer.price > 50000;
-      }
-      return false;
+
+      var dictTypePrice = {
+        'any': true,
+        'low': element.offer.price < 10000,
+        'middle': element.offer.price >= 10000 && element.offer.price <= 50000,
+        'high': element.offer.price > 50000,
+        'default': false
+      };
+
+      return dictTypePrice[price.value] || dictTypePrice['default'];
     });
-
-    if (rooms.value !== 'any') {
-      filteredOffers = filteredOffers.filter(function (element) {
-        return element.offer.rooms === +rooms.value;
-      });
-    }
-
-    if (guests.value !== 'any') {
-      filteredOffers = filteredOffers.filter(function (element) {
-        return element.offer.guests === +(guests.value);
-      });
-    }
 
     filteredOffers.forEach(function (element) {
       fragment.appendChild(window.pin.createPin(element));
@@ -76,7 +69,7 @@ window.filters = (function () {
   };
 
   filters.addEventListener('change', function () {
-    window.debounce.debounceItem(updatePins(offers));
+    window.utils.debounceItem(updatePins(offers));
   });
 
   return updatePins;

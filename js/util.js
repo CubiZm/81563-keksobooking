@@ -11,6 +11,9 @@ window.utils = (function () {
     ENTER: 13
   };
 
+  var DEBOUNCE_INTERVAL = 300; // ms
+  var lastTimeout;
+
   return {
 
     /**
@@ -82,6 +85,13 @@ window.utils = (function () {
 
     isEnterPressed: function (keyCode) {
       return keyCode === keyCodes.ENTER;
+    },
+
+    debounceItem: function (callback) {
+      if (lastTimeout) {
+        window.clearTimeout(lastTimeout);
+      }
+      lastTimeout = window.setTimeout(callback, DEBOUNCE_INTERVAL);
     }
   };
 })();
