@@ -42,10 +42,6 @@ window.filters = (function () {
       }
     };
 
-    filteredElements(type, 'type');
-    filteredElements(rooms, 'rooms');
-    filteredElements(guests, 'guests');
-
     filteredOffers = filteredOffers.filter(function (element) {
 
       var dictTypePrice = {
@@ -58,6 +54,10 @@ window.filters = (function () {
 
       return dictTypePrice[price.value] || dictTypePrice['default'];
     });
+
+    filteredElements(type, 'type');
+    filteredElements(rooms, 'rooms');
+    filteredElements(guests, 'guests');
 
     filteredOffers.forEach(function (element) {
       fragment.appendChild(window.pin.createPin(element));
