@@ -76,7 +76,7 @@ window.filters = (function () {
   };
 
   filters.addEventListener('change', function () {
-    updatePins(offers);
+    window.debounce.debounceItem(updatePins(offers));
   });
 
   return updatePins;
