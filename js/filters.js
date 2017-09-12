@@ -34,14 +34,6 @@ window.filters = (function () {
       }
     });
 
-    var filteredElements = function (input, value) {
-      if (input.value !== 'any') {
-        filteredOffers = filteredOffers.filter(function (element) {
-          return element.offer[value].toString() === input.value.toString();
-        });
-      }
-    };
-
     filteredOffers = filteredOffers.filter(function (element) {
 
       var dictTypePrice = {
@@ -54,6 +46,14 @@ window.filters = (function () {
 
       return dictTypePrice[price.value] || dictTypePrice['default'];
     });
+
+    var filteredElements = function (input, value) {
+      if (input.value !== 'any') {
+        filteredOffers = filteredOffers.filter(function (element) {
+          return element.offer[value].toString() === input.value.toString();
+        });
+      }
+    };
 
     filteredElements(type, 'type');
     filteredElements(rooms, 'rooms');
