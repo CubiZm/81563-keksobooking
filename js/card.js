@@ -8,12 +8,45 @@ window.card = (function () {
 
   var template = document.querySelector('#lodge-template').content;
 
+  var adTypesDict = {
+    'flat': 'Квартира',
+    'house': 'Дом',
+    'bungalo': 'Бунгало'
+  };
+
   /**
-   * Создаёт HTML-разметку объявления
-   * @param {Ad} ad
-   *
-   * @return {HTMLElement}
+   * @typedef {Object} AdLocation
+   * @property {number} x - координата по оси Х
+   * @property {number} y - координата по оси Y
    */
+
+  /**
+   * @typedef {Object} AdOffer
+   * @property {string} title
+   * @property {string} address - координаты адреса
+   * @property {number} price - число от 1000 до 1000000
+   * @property {string} type - тип жилища
+   * @property {number} rooms - число комнат от 1 до 5
+   * @property {number} guests - число гостей от 1 до 10
+   * @property {string} checkin - время поселения
+   * @property {string} checkout - время выселения
+   * @property {Array} features - массив различной длины от 0 до 6
+   * @property {string} description
+   * @property {Array} photos
+   */
+
+  /**
+   * @typedef {Object} AdAuthor
+   * @property {string} avatar
+   */
+
+  /**
+   * @typedef {Object} Ad
+   * @property {AdAuthor} author
+   * @property {AdOffer} offer
+   * @property {AdLocation} location
+   */
+
   var createAdNode = function (ad) {
 
     var adElement = template.cloneNode(true);
@@ -31,7 +64,7 @@ window.card = (function () {
     adTitle.textContent = ad.offer.title;
     adAddress.textContent = ad.offer.address;
     adPrice.textContent = ad.offer.price + ' ₽/ночь';
-    adType.textContent = window.data.adTypesDict[ad.offer.type];
+    adType.textContent = adTypesDict[ad.offer.type];
     adRoomsAndGuest.textContent = 'Для ' + ad.offer.guests + ' гостей в ' + ad.offer.rooms + ' комнатах';
     adCheck.textContent = 'Заезд после ' + ad.offer.checkin + ', выезд до ' + ad.offer.checkout;
     adDescription.textContent = ad.offer.description;

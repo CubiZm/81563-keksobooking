@@ -6,6 +6,26 @@ window.map = (function () {
   var pinMain = document.querySelector('.pin__main');
   var address = document.querySelector('#address');
 
+  /**
+   * Параметры главного пина
+   * @enum {number} PinImgParams
+   */
+  var PinImgParams = {
+    WIDTH: 75,
+    HEIGHT: 94
+  };
+
+  /**
+   * Параметры карты и панели фильтров
+   * @enum {number}  MapParams
+   */
+  var MapParams = {
+    FILTER_HEIGTH: 46,
+    HEADER_HEIGHT: 80,
+    MAX_MAP_WIDTH: map.offsetWidth,
+    MAX_MAP_HEIGHT: map.offsetHeight
+  };
+
   pinMain.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
 
@@ -18,31 +38,16 @@ window.map = (function () {
     var onMouseMove = function (evtMove) {
       evtMove.preventDefault();
 
-      /**
-       * Параметры главного пина
-       * @enum {number} pinImg
-       */
-      var pinImg = {
-        WIDTH: 75,
-        HEIGTH: 94
-      };
-
       // на сколько сдвинулся курсор
       var shift = {
         x: startCoords.x - evtMove.clientX,
         y: startCoords.y - evtMove.clientY
       };
 
-      var filterPanelHeigth = 46;
-      var headerPanelHeight = 80;
-
-      var maxMapWidth = map.offsetWidth;
-      var maxMapHeight = map.offsetHeight;
-
-      var maxCoordX = maxMapWidth - pinImg.WIDTH / 2;
-      var minCoordX = 0 - pinImg.WIDTH / 2;
-      var maxCoordY = maxMapHeight - pinImg.HEIGTH - filterPanelHeigth;
-      var minCoordY = 0 + headerPanelHeight;
+      var maxCoordX = MapParams.MAX_MAP_WIDTH - PinImgParams.WIDTH / 2;
+      var minCoordX = 0 - PinImgParams.WIDTH / 2;
+      var maxCoordY = MapParams.MAX_MAP_HEIGHT - PinImgParams.HEIGHT - MapParams.FILTER_HEIGTH;
+      var minCoordY = 0 + MapParams.HEADER_HEIGHT;
 
       var pinY = pinMain.offsetTop - shift.y;
       var pinX = pinMain.offsetLeft - shift.x;
@@ -74,7 +79,7 @@ window.map = (function () {
       pinMain.style.top = pinY + 'px';
       pinMain.style.left = pinX + 'px';
 
-      address.value = (pinX + pinImg.WIDTH / 2) + ', ' + (pinY + pinImg.HEIGTH);
+      address.value = (pinX + PinImgParams.WIDTH / 2) + ', ' + (pinY + PinImgParams.HEIGHT);
 
     };
 
@@ -90,7 +95,7 @@ window.map = (function () {
   });
 
   var succesHandler = function (offers) {
-    window.filters(offers);
+    window.filter(offers);
   };
 
   var errorHandler = function (errorMessage) {

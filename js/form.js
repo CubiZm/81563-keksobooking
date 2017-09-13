@@ -1,6 +1,31 @@
 'use strict';
 
 window.form = (function () {
+
+  /**
+   * Параметры полей формы
+   * @enum {Array} FormValues
+   */
+  var FormValues = {
+    ROOMS: [
+      '100',
+      '1',
+      '2',
+      '3',
+    ],
+    CAPACITY: [
+      '0',
+      '1',
+      '2',
+      '3'
+    ],
+    TIMES: [
+      '12:00',
+      '13:00',
+      '14:00'
+    ]
+  };
+
   var form = document.querySelector('.notice__form');
 
   var priceInput = document.querySelector('#price');
@@ -11,41 +36,20 @@ window.form = (function () {
   var rooms = document.querySelector('#room_number');
   var capacity = document.querySelector('#capacity');
 
-
   var dictTypePrice = {
     'bungalo': 0,
     'flat': 1000,
-    'house': 5000,
+    'house': 10000,
     'palace': 10000
   };
-
-  var roomsValues = [
-    '100',
-    '1',
-    '2',
-    '3',
-  ];
-
-  var capacityValues = [
-    '0',
-    '1',
-    '2',
-    '3'
-  ];
-
-  var timeValues = [
-    '12:00',
-    '13:00',
-    '14:00'
-  ];
 
   /**
    * Набор свойств для комнат: значение — количество гостей,
    * ключ — массив с количеством доступных комнат
    *
-   * @enum {Array} objRooms
+   * @enum {Array} RoomsDictType
    */
-  var objRooms = {
+  var RoomsDictType = {
     '1': ['1'],
     '2': ['1', '2'],
     '3': ['1', '2', '3'],
@@ -65,7 +69,6 @@ window.form = (function () {
   };
 
   var selectType = function () {
-    priceInput.value = dictTypePrice[type.value];
     priceInput.min = dictTypePrice[type.value];
   };
 
@@ -73,7 +76,7 @@ window.form = (function () {
     var options = capacity.querySelectorAll('option');
 
     options.forEach(function (element) {
-      element.disabled = !(objRooms[rooms.value].includes(element.value));
+      element.disabled = !(RoomsDictType[rooms.value].includes(element.value));
     });
   };
 
@@ -114,11 +117,11 @@ window.form = (function () {
   onSyncOptions();
 
   // слушает изменения на различных инпутах и синхронизирует их.
-  window.synchronizeFields(timeIn, timeOut, timeValues, timeValues, syncElements);
-  window.synchronizeFields(timeOut, timeIn, timeValues, timeValues, syncElements);
-  window.synchronizeFields(type, priceInput, roomsValues, capacityValues, selectType);
-  window.synchronizeFields(rooms, capacity, roomsValues, capacityValues, syncElements);
-  window.synchronizeFields(rooms, capacity, roomsValues, capacityValues, onSyncOptions);
+  window.synchronizeFields(timeIn, timeOut, FormValues.TIMES, FormValues.TIMES, syncElements);
+  window.synchronizeFields(timeOut, timeIn, FormValues.TIMES, FormValues.TIMES, syncElements);
+  window.synchronizeFields(type, priceInput, FormValues.ROOMS, FormValues.CAPACITY, selectType);
+  window.synchronizeFields(rooms, capacity, FormValues.ROOMS, FormValues.CAPACITY, syncElements);
+  window.synchronizeFields(rooms, capacity, FormValues.ROOMS, FormValues.CAPACITY, onSyncOptions);
 
   form.addEventListener('invalid', onInvalideForm, true);
   form.addEventListener('submit', onSubmitForm);
