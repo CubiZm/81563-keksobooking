@@ -8,8 +8,6 @@ window.card = (function () {
 
   var template = document.querySelector('#lodge-template').content;
 
-  var randomFeaturesArray = window.utils.getRandomArray(window.data.pinParams.FEATURES, window.utils.getRandomNumber(0, 5), true);
-
   /**
    * Создаёт HTML-разметку объявления
    * @param {Ad} ad
@@ -28,17 +26,28 @@ window.card = (function () {
     var adCheck = adElement.querySelector('.lodge__checkin-time');
     var adFeatures = adElement.querySelector('.lodge__features');
     var adDescription = adElement.querySelector('.lodge__description');
+    var adPhotos = adElement.querySelector('.lodge__photos');
 
     adTitle.textContent = ad.offer.title;
     adAddress.textContent = ad.offer.address;
     adPrice.textContent = ad.offer.price + ' ₽/ночь';
-    adType.textContent = window.data.adTypesDict[window.utils.getRandomElement(window.data.pinParams.TYPES)];
+    adType.textContent = window.data.adTypesDict[ad.offer.type];
     adRoomsAndGuest.textContent = 'Для ' + ad.offer.guests + ' гостей в ' + ad.offer.rooms + ' комнатах';
     adCheck.textContent = 'Заезд после ' + ad.offer.checkin + ', выезд до ' + ad.offer.checkout;
     adDescription.textContent = ad.offer.description;
     dialogImg.src = ad.author.avatar;
 
-    randomFeaturesArray.forEach(function (element) {
+    (ad.offer.photos).forEach(function (element) {
+      var img = document.createElement('img');
+
+      img.src = element;
+      img.width = '60';
+      img.height = '40';
+
+      adPhotos.appendChild(img);
+    });
+
+    (ad.offer.features).forEach(function (element) {
       var span = document.createElement('span');
 
       span.className = 'feature__image feature__image--' + element;

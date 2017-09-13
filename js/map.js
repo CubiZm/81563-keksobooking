@@ -3,27 +3,8 @@
 window.map = (function () {
 
   var map = document.querySelector('.tokyo');
-  var tokyoPinMap = document.querySelector('.tokyo__pin-map');
   var pinMain = document.querySelector('.pin__main');
   var address = document.querySelector('#address');
-
-  /**
-   * Создаёт HTML-фрагмент пинов по шаблону
-   * @param {Array.<Ad>} array
-   *
-   * @return {HTMLElement}
-   */
-  var getPinNodes = function (array) {
-
-    var fragment = document.createDocumentFragment();
-
-    array.forEach(function (element) {
-      fragment.appendChild(window.pin.createPin(element));
-    });
-
-    return fragment;
-  };
-
 
   pinMain.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
@@ -109,7 +90,7 @@ window.map = (function () {
   });
 
   var succesHandler = function (offers) {
-    tokyoPinMap.appendChild(getPinNodes(offers));
+    window.filters(offers);
   };
 
   var errorHandler = function (errorMessage) {

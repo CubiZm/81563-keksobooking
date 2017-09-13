@@ -59,7 +59,7 @@ window.data = (function () {
 
     adTypesDict: {
       'flat': 'Квартира',
-      'house': 'Дома',
+      'house': 'Дом',
       'bungalo': 'Бунгало'
     },
 
