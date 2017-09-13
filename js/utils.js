@@ -87,7 +87,7 @@ window.utils = (function () {
       return keyCode === keyCodes.ENTER;
     },
 
-    debounceItem: function (callback) {
+    debounce: function (callback) {
       if (lastTimeout) {
         window.clearTimeout(lastTimeout);
       }

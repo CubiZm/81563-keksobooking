@@ -1,6 +1,6 @@
 'use strict';
 
-window.filters = (function () {
+window.filter = (function () {
   var filters = document.querySelector('.tokyo__filters');
   var type = filters.querySelector('#housing_type');
   var price = filters.querySelector('#housing_price');
@@ -68,7 +68,7 @@ window.filters = (function () {
   };
 
   filters.addEventListener('change', function () {
-    window.utils.debounceItem(updatePins(offers));
+    window.utils.debounce(updatePins(offers));
   });
 
   return updatePins;

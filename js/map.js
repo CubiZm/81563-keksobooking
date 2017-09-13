@@ -90,7 +90,7 @@ window.map = (function () {
   });
 
   var succesHandler = function (offers) {
-    window.filters(offers);
+    window.filter(offers);
   };
 
   var errorHandler = function (errorMessage) {
