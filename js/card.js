@@ -8,6 +8,12 @@ window.card = (function () {
 
   var template = document.querySelector('#lodge-template').content;
 
+  var adTypesDict = {
+    'flat': 'Квартира',
+    'house': 'Дом',
+    'bungalo': 'Бунгало'
+  };
+
   /**
    * Создаёт HTML-разметку объявления
    * @param {Ad} ad
@@ -31,7 +37,7 @@ window.card = (function () {
     adTitle.textContent = ad.offer.title;
     adAddress.textContent = ad.offer.address;
     adPrice.textContent = ad.offer.price + ' ₽/ночь';
-    adType.textContent = window.data.adTypesDict[ad.offer.type];
+    adType.textContent = adTypesDict[ad.offer.type];
     adRoomsAndGuest.textContent = 'Для ' + ad.offer.guests + ' гостей в ' + ad.offer.rooms + ' комнатах';
     adCheck.textContent = 'Заезд после ' + ad.offer.checkin + ', выезд до ' + ad.offer.checkout;
     adDescription.textContent = ad.offer.description;

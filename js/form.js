@@ -11,7 +11,6 @@ window.form = (function () {
   var rooms = document.querySelector('#room_number');
   var capacity = document.querySelector('#capacity');
 
-
   var dictTypePrice = {
     'bungalo': 0,
     'flat': 1000,
