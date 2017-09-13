@@ -4,9 +4,9 @@ window.utils = (function () {
 
   /**
    * набор свойств для клавиш
-   * @enum {number} keyCode
+   * @enum {number} KeyCode
    */
-  var keyCodes = {
+  var KeyCodes = {
     ESC: 27,
     ENTER: 13
   };
@@ -17,11 +17,11 @@ window.utils = (function () {
   return {
 
     isEscPressed: function (keyCode) {
-      return keyCode === keyCodes.ESC;
+      return keyCode === KeyCodes.ESC;
     },
 
     isEnterPressed: function (keyCode) {
-      return keyCode === keyCodes.ENTER;
+      return keyCode === KeyCodes.ENTER;
     },
 
     debounce: function (callback) {

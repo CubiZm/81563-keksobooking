@@ -1,12 +1,12 @@
 'use strict';
 
 window.filter = (function () {
-  var filters = document.querySelector('.tokyo__filters');
-  var type = filters.querySelector('#housing_type');
-  var price = filters.querySelector('#housing_price');
-  var rooms = filters.querySelector('#housing_room-number');
-  var guests = filters.querySelector('#housing_guests-number');
-  var features = filters.querySelectorAll('input[type="checkbox"]');
+  var filterForm = document.querySelector('.tokyo__filters');
+  var type = filterForm.querySelector('#housing_type');
+  var price = filterForm.querySelector('#housing_price');
+  var rooms = filterForm.querySelector('#housing_room-number');
+  var guests = filterForm.querySelector('#housing_guests-number');
+  var features = filterForm.querySelectorAll('input[type="checkbox"]');
 
   var offers = [];
 
@@ -67,7 +67,7 @@ window.filter = (function () {
 
   };
 
-  filters.addEventListener('change', function () {
+  filterForm.addEventListener('change', function () {
     window.utils.debounce(updatePins(offers));
   });
 

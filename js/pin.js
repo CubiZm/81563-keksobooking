@@ -3,26 +3,27 @@
 window.pin = (function () {
 
   /**
+   * Параметры изображения пина
+   *
+   * @enum {number|string} PinImgParams
+   */
+  var PinImgParams = {
+    WIDTH: 40,
+    HEIGHT: 40,
+    CLASS_NAME: 'rounded'
+  };
+
+  var PIN_CLASS_NAME = 'pin';
+  var PIN_TAB_INDEX = '0';
+
+  /**
    * Создаёт HTML-разметку пина
+   * @typedef {Object} Ad
    * @param {Ad} pin
    *
    * @return {HTMLElement}
    */
   var createPinElement = function (pin) {
-
-    /**
-     * Параметры изображения пина
-     *
-     * @enum {*} img
-     */
-    var img = {
-      WIDTH: 40,
-      HEIGHT: 40,
-      CLASS_NAME: 'rounded'
-    };
-
-    var PIN_CLASS_NAME = 'pin';
-    var PIN_TAB_INDEX = '0';
 
     var pinBaloon = document.createElement('div');
     var imgElement = document.createElement('img');
@@ -32,10 +33,10 @@ window.pin = (function () {
     pinBaloon.style.top = pin.location.y - pinBaloon.offsetHeight + 'px';
     pinBaloon.tabIndex = PIN_TAB_INDEX;
 
-    imgElement.className = img.CLASS_NAME;
+    imgElement.className = PinImgParams.CLASS_NAME;
     imgElement.src = pin.author.avatar;
-    imgElement.width = img.WIDTH;
-    imgElement.height = img.HEIGHT;
+    imgElement.width = PinImgParams.WIDTH;
+    imgElement.height = PinImgParams.HEIGHT;
 
     pinBaloon.appendChild(imgElement);
 

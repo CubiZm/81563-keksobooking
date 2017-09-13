@@ -16,6 +16,33 @@ window.card = (function () {
 
   /**
    * Создаёт HTML-разметку объявления
+   * @typedef {Object} AdLocation
+   * @property {number} x - координата по оси Х
+   * @property {number} y - координата по оси Y
+   */
+
+  /**
+   * @typedef {Object} AdOffer
+   * @property {string} title
+   * @property {string} address - координаты адреса
+   * @property {number} price - случайное число от 1000 до 1000000
+   * @property {string} type - тип жилища
+   * @property {number} rooms - число комнат
+   * @property {number} guests - число гостей
+   * @property {string} checkin - время поселения
+   * @property {string} checkout - время выселения
+   * @property {Array} features - массив различной длины от 0 до 6
+   * @property {string} description
+   * @property {Array} photos
+   */
+
+  /**
+   * @typedef {Object} AdAuthor
+   * @property {string} avatar
+   */
+
+  /**
+   * @typedef {Object} Ad
    * @param {Ad} ad
    *
    * @return {HTMLElement}

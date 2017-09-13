@@ -22,6 +22,7 @@ window.backend = (function () {
         onError('Неизвестный статус: ');
       }
     };
+
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
 
