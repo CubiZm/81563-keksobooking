@@ -4,9 +4,9 @@ window.form = (function () {
 
   /**
    * Параметры полей формы
-   * @enum {Array} formValues
+   * @enum {Array} FormValues
    */
-  var formValues = {
+  var FormValues = {
     ROOMS: [
       '100',
       '1',
@@ -117,11 +117,11 @@ window.form = (function () {
   onSyncOptions();
 
   // слушает изменения на различных инпутах и синхронизирует их.
-  window.synchronizeFields(timeIn, timeOut, formValues.TIMES, formValues.TIMES, syncElements);
-  window.synchronizeFields(timeOut, timeIn, formValues.TIMES, formValues.TIMES, syncElements);
-  window.synchronizeFields(type, priceInput, formValues.ROOMS, formValues.CAPACITY, selectType);
-  window.synchronizeFields(rooms, capacity, formValues.ROOMS, formValues.CAPACITY, syncElements);
-  window.synchronizeFields(rooms, capacity, formValues.ROOMS, formValues.CAPACITY, onSyncOptions);
+  window.synchronizeFields(timeIn, timeOut, FormValues.TIMES, FormValues.TIMES, syncElements);
+  window.synchronizeFields(timeOut, timeIn, FormValues.TIMES, FormValues.TIMES, syncElements);
+  window.synchronizeFields(type, priceInput, FormValues.ROOMS, FormValues.CAPACITY, selectType);
+  window.synchronizeFields(rooms, capacity, FormValues.ROOMS, FormValues.CAPACITY, syncElements);
+  window.synchronizeFields(rooms, capacity, FormValues.ROOMS, FormValues.CAPACITY, onSyncOptions);
 
   form.addEventListener('invalid', onInvalideForm, true);
   form.addEventListener('submit', onSubmitForm);

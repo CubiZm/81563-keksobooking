@@ -17,9 +17,9 @@ window.map = (function () {
 
   /**
    * Параметры карты и панели фильтров
-   * @enum {number} mapParams
+   * @enum {number}  MapParams
    */
-  var mapParams = {
+  var MapParams = {
     FILTER_HEIGTH: 46,
     HEADER_HEIGHT: 80,
     MAX_MAP_WIDTH: map.offsetWidth,
@@ -44,10 +44,10 @@ window.map = (function () {
         y: startCoords.y - evtMove.clientY
       };
 
-      var maxCoordX = mapParams.MAX_MAP_WIDTH - PinImgParams.WIDTH / 2;
+      var maxCoordX = MapParams.MAX_MAP_WIDTH - PinImgParams.WIDTH / 2;
       var minCoordX = 0 - PinImgParams.WIDTH / 2;
-      var maxCoordY = mapParams.MAX_MAP_HEIGHT - PinImgParams.HEIGHT - mapParams.FILTER_HEIGTH;
-      var minCoordY = 0 + mapParams.HEADER_HEIGHT;
+      var maxCoordY = MapParams.MAX_MAP_HEIGHT - PinImgParams.HEIGHT - MapParams.FILTER_HEIGTH;
+      var minCoordY = 0 + MapParams.HEADER_HEIGHT;
 
       var pinY = pinMain.offsetTop - shift.y;
       var pinX = pinMain.offsetLeft - shift.x;

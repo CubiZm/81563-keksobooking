@@ -18,7 +18,6 @@ window.pin = (function () {
 
   /**
    * Создаёт HTML-разметку пина
-   * @typedef {Object} Ad
    * @param {Ad} pin
    *
    * @return {HTMLElement}
