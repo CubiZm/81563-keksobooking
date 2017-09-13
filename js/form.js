@@ -64,7 +64,6 @@ window.form = (function () {
   };
 
   var selectType = function () {
-    priceInput.value = dictTypePrice[type.value];
     priceInput.min = dictTypePrice[type.value];
   };
 
