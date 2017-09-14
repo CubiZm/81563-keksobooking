@@ -67,8 +67,12 @@ window.filter = (function () {
 
   };
 
+  var updatePinsWrap = function () {
+    updatePins(offers);
+  };
+
   filterForm.addEventListener('change', function () {
-    window.utils.debounce(updatePins(offers));
+    window.utils.debounce(updatePinsWrap);
   });
 
   return updatePins;
