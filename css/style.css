@@ -186,6 +186,7 @@ select option:hover {
 
 .upload input {
     position: absolute;
+    left: 0;
     z-index: 2;
     opacity: 0;
     width:100%;
@@ -403,6 +404,7 @@ select option:hover {
 }
 
 .form__photo {
+    position: relative;
     margin-right: 5px;
     margin-bottom: 5px;
     box-sizing: border-box;
@@ -687,4 +689,20 @@ select option:hover {
 
 input[data-readonly] {
   pointer-events: none;
+}
+
+.user-photo {
+  width: 70px;
+  height: 70px;
+  border-radius: 4px;
+}
+
+.delete-photo {
+  position: absolute;
+  top: 0;
+  width: 15px;
+  height: 15px;
+  background: red;
+  background: url(../img/delete-photo-btn.png) no-repeat;
+  background-size: 15px;
 }
