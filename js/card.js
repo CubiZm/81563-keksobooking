@@ -1,6 +1,6 @@
 'use strict';
 
-window.card = (function () {
+(function () {
 
   var dialog = document.querySelector('.dialog');
   var dialogTitle = document.querySelector('.dialog__title');
@@ -131,7 +131,7 @@ window.card = (function () {
     dialog.replaceChild(createAdNode(ad), dialogPanel);
   };
 
-  return {
+  window.card = {
     showDialog: function (ad) {
       changeDialogPanel(ad);
       initEventHandler();

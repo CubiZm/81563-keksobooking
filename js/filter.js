@@ -1,12 +1,17 @@
 'use strict';
 
-window.filter = (function () {
+(function () {
   var filterForm = document.querySelector('.tokyo__filters');
   var type = filterForm.querySelector('#housing_type');
   var price = filterForm.querySelector('#housing_price');
   var rooms = filterForm.querySelector('#housing_room-number');
   var guests = filterForm.querySelector('#housing_guests-number');
   var features = filterForm.querySelectorAll('input[type="checkbox"]');
+
+  var dictTypePrice = {
+    'small': 10000,
+    'large': 50000
+  };
 
   var offers = [];
 
@@ -36,15 +41,15 @@ window.filter = (function () {
 
     filteredOffers = filteredOffers.filter(function (element) {
 
-      var dictTypePrice = {
+      var dictTypePriceFilter = {
         'any': true,
-        'low': element.offer.price < 10000,
-        'middle': element.offer.price >= 10000 && element.offer.price <= 50000,
-        'high': element.offer.price > 50000,
+        'low': element.offer.price < dictTypePrice['small'],
+        'middle': element.offer.price >= dictTypePrice['small'] && element.offer.price <= dictTypePrice['large'],
+        'high': element.offer.price > dictTypePrice['large'],
         'default': false
       };
 
-      return dictTypePrice[price.value] || dictTypePrice['default'];
+      return dictTypePriceFilter[price.value] || dictTypePriceFilter['default'];
     });
 
     var filteredElements = function (input, value) {
@@ -75,6 +80,6 @@ window.filter = (function () {
     window.utils.debounce(updatePinsWrap);
   });
 
-  return updatePins;
+  window.filter = updatePins;
 
 })();

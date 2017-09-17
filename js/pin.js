@@ -1,6 +1,6 @@
 'use strict';
 
-window.pin = (function () {
+(function () {
 
   /**
    * Параметры изображения пина
@@ -66,7 +66,7 @@ window.pin = (function () {
     });
   };
 
-  return {
+  window.pin = {
     /**
      * Создаёт пины
      * @param {Ad} ad
