@@ -7,6 +7,7 @@
   var rooms = filterForm.querySelector('#housing_room-number');
   var guests = filterForm.querySelector('#housing_guests-number');
   var features = filterForm.querySelectorAll('input[type="checkbox"]');
+  var tokyoPinMap = document.querySelector('.tokyo__pin-map');
 
   var dictTypePrice = {
     'small': 10000,
@@ -15,11 +16,8 @@
 
   var offers = [];
 
-  var updatePins = function (data) {
+  var renderPins = function (data) {
     offers = data;
-    var tokyoPinMap = document.querySelector('.tokyo__pin-map');
-    var fragment = document.createDocumentFragment();
-
     var filteredOffers = offers;
 
     var pins = document.querySelectorAll('.pin:not(.pin__main)');
@@ -38,6 +36,13 @@
         });
       }
     });
+  };
+
+  var updatePins = function (data) {
+    offers = data;
+    var fragment = document.createDocumentFragment();
+
+    var filteredOffers = offers;
 
     filteredOffers = filteredOffers.filter(function (element) {
 
@@ -67,6 +72,8 @@
     filteredOffers.forEach(function (element) {
       fragment.appendChild(window.pin.createPin(element));
     });
+
+    renderPins(data);
 
     tokyoPinMap.appendChild(fragment);
 
