@@ -5,8 +5,6 @@
   var map = document.querySelector('.tokyo');
   var pinMain = document.querySelector('.pin__main');
   var address = document.querySelector('#address');
-  var tokyoPinMap = document.querySelector('.tokyo__pin-map');
-  var filterForm = document.querySelector('.tokyo__filters');
 
   /**
    * Параметры главного пина
@@ -97,18 +95,7 @@
   });
 
   var succesHandler = function (offers) {
-    var randomPinsArray = window.utils.getRandomArray(offers, 3, true);
-    var fragment = document.createDocumentFragment();
-
-    randomPinsArray.forEach(function (elem) {
-      fragment.appendChild(window.pin.createPin(elem));
-    });
-
-    tokyoPinMap.appendChild(fragment);
-
-    filterForm.addEventListener('change', function () {
-      window.filter(offers);
-    });
+    window.filter(offers);
   };
 
   var errorHandler = function (errorMessage) {
