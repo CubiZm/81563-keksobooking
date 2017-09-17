@@ -1,6 +1,6 @@
 'use strict';
 
-window.synchronizeFields = (function () {
+(function () {
   /**
    * Синхронизация различных полей
    * @param {HTMLElement} first - первый элемент для сравнения
@@ -9,7 +9,7 @@ window.synchronizeFields = (function () {
    * @param {Array} secondArray - массив свойств второвогоэлемента
    * @param {Function} callback - функция обратного вызова, которая осуществляет что-либо (н-р синхронизацию)
    */
-  return function (first, second, firstArray, secondArray, callback) {
+  window.synchronizeFields = function (first, second, firstArray, secondArray, callback) {
     first.addEventListener('change', function () {
       callback(first, second, firstArray, secondArray);
     });

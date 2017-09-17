@@ -1,6 +1,6 @@
 'use strict';
 
-window.utils = (function () {
+(function () {
 
   /**
    * набор свойств для клавиш
@@ -14,7 +14,53 @@ window.utils = (function () {
   var DEBOUNCE_INTERVAL = 300; // ms
   var lastTimeout;
 
-  return {
+  window.utils = {
+
+    /**
+     * Генерирует рандомное число в заданном диапозоне
+     * @param {number} min
+     * @param {number} max
+     *
+     * @return {number}
+     */
+    getRandomNumber: function (min, max) {
+      return Math.floor(min + Math.random() * (max + 1 - min));
+    },
+
+    /**
+     * Получает рандомный элемент из массива
+     * @param {Array} array
+     *
+     * @return {*}
+     */
+    getRandomElement: function (array) {
+      var index = Math.floor(this.getRandomNumber(0, array.length - 1));
+      return array[index];
+    },
+
+    /**
+     * Возвращает массив со случайными значениями заданной длины
+     * @param {Array} array
+     * @param {number} length
+     * @param {boolean} unique - если true, то элементы уникальные
+     *
+     * @return {Array}
+     */
+    getRandomArray: function (array, length, unique) {
+      var arr = [];
+
+      while (arr.length < length) {
+        var randomElement = this.getRandomElement(array);
+
+        if (unique && ~arr.indexOf(randomElement)) {
+          continue;
+        } else {
+          arr.push(randomElement);
+        }
+      }
+
+      return arr;
+    },
 
     isEscPressed: function (keyCode) {
       return keyCode === KeyCodes.ESC;

@@ -1,6 +1,6 @@
 'use strict';
 
-window.form = (function () {
+(function () {
 
   /**
    * Параметры полей формы
